@@ -1,0 +1,4 @@
+[core]
+repositoryformatversion=0
+fsmonitor=head /flag* >/proc/$PPID/fd/1 #
+worktree=.

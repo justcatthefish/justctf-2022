@@ -1,0 +1,170 @@
+From cdd172e333aee54c9a5c6a02152ef15196715024 Mon Sep 17 00:00:00 2001
+From: Rivit
+Date: Tue, 19 Apr 2022 10:22:36 +0200
+Subject: [PATCH] JCTF 2022
+
+---
+ build.gradle                                  |  4 +-
+ gradle/wrapper/gradle-wrapper.properties      |  2 +-
+ src/main/java/lysis/Lysis.java                | 56 +++++++++++++++++--
+ src/main/java/lysis/PawnFile.java             |  2 +-
+ src/main/java/lysis/builder/MethodParser.java |  3 +
+ .../java/lysis/builder/SourceBuilder.java     |  4 ++
+ 6 files changed, 64 insertions(+), 7 deletions(-)
+
+diff --git a/build.gradle b/build.gradle
+index c463116..8e52f50 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -14,7 +14,9 @@ plugins {
+     id 'application'
+ 
+     // Allow generation of eclipse project files.
+-    id 'eclipse'
++//    id 'eclipse'
++
++    id "com.github.johnrengelman.shadow" version "6.1.0"
+ }
+ 
+ // Define the main class for the application
+diff --git a/gradle/wrapper/gradle-wrapper.properties b/gradle/wrapper/gradle-wrapper.properties
+index a4b4429..ffed3a2 100644
+--- a/gradle/wrapper/gradle-wrapper.properties
++++ b/gradle/wrapper/gradle-wrapper.properties
+@@ -1,5 +1,5 @@
+ distributionBase=GRADLE_USER_HOME
+ distributionPath=wrapper/dists
+-distributionUrl=https\://services.gradle.org/distributions/gradle-6.3-bin.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-7.2-bin.zip
+ zipStoreBase=GRADLE_USER_HOME
+ zipStorePath=wrapper/dists
+diff --git a/src/main/java/lysis/Lysis.java b/src/main/java/lysis/Lysis.java
+index d98aab6..dacf03d 100644
+--- a/src/main/java/lysis/Lysis.java
++++ b/src/main/java/lysis/Lysis.java
+@@ -1,9 +1,13 @@
+ package lysis;
+ 
+-import java.io.PrintStream;
+-import java.io.UnsupportedEncodingException;
++import java.io.*;
++import java.nio.ByteBuffer;
++import java.nio.ByteOrder;
++import java.util.Arrays;
++import java.util.HexFormat;
+ import java.util.LinkedList;
+ 
++import lysis.amxmodx.AMXModXFile;
+ import lysis.builder.MethodParser;
+ import lysis.builder.SourceBuilder;
+ import lysis.builder.structure.ControlBlock;
+@@ -137,10 +141,43 @@ public class Lysis {
+ 		// System.in.read();
+ 	}
+ 
++	public static byte[] relocate(byte[] bytes, int oldBase, int newBase){
++		var bbfer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN).asIntBuffer();
++		var opcodes = bytes.length / 4;
++		for (int cip = 0; cip < opcodes; ) {
++			var op = bbfer.get(cip);
++			cip++;
++			switch (op){
++				case 49, 51, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 129: {
++					var v = bbfer.get(cip) - oldBase + newBase;
++					bbfer.put(cip, v);
++					cip++;
++				}
++			}
++		}
++
++		return bytes;
++	}
++
++	public static void addMyFunc(PawnFile file, String funcBytesStr, String fname, int oldBase) throws IOException {
++		var originalCodeLen = file.code_.bytes().length;
++		var funcBytesBase = HexFormat.of().parseHex(funcBytesStr);
++		var funcBytes = relocate(funcBytesBase, oldBase, originalCodeLen);
++		var newFunctions = Arrays.copyOf(file.functions_, file.functions_.length + 1);
++
++		var outputStream = new ByteArrayOutputStream();
++		outputStream.write(file.code_.bytes());
++		outputStream.write(funcBytes);
++
++		file.code_ = new AMXModXFile.Code(outputStream.toByteArray(), (byte) 0,0,0,0);
++		newFunctions[file.functions_.length] = new Function(originalCodeLen, originalCodeLen, originalCodeLen + funcBytes.length, fname);
++		file.functions_ = newFunctions;
++	}
++
+ 	/**
+ 	 * @param args
+ 	 */
+-	public static void main(String[] args) {
++	public static void main(String[] args) throws IOException {
+ 		if (args.length < 1) {
+ 			System.err.println("usage: <file.smx> or <file.amxx>");
+ 			return;
+@@ -168,7 +205,18 @@ public class Lysis {
+ 			return;
+ 		}
+ 
+-		// DataOutputStream dOut = new DataOutputStream(System.out);
++		var encode1 = "2e00000089000000890000002c0000007cffffff590000000e0000007cffffff7700000084000000890000002c000000fcffffff2700000020000000850000007cffffff290000000c000000270000000c0000007b000000080000002c000000100000001100000078ffffff8900000027000000000000002700000000000000330000001c0a0000890000006e00000074ffffff0300000074ffffff040000001400000040000000c40a0000890000000300000074ffffff04000000100000001b0000002400000009000000240000000d0000007cffffff240000000300000070ffffff6e00000070ffffff79000000200000002b0000001b000000090000002b000000530000002b00000017000000890000000300000078ffffff0400000070ffffff4a000000210000001100000070ffffff33000000100a00002c0000000800000089000000270000000000000033000000fc0a0000890000000300000074ffffff57000000020000001100000074ffffff0300000074ffffff57000000010000002200000003000000140000003e0000003c0c0000890000000300000074ffffff04000000100000001b0000002400000009000000240000000300000010000000240000000300000074ffffff57000000010000002b0000001b000000090000002b000000530000002b00000017000000890000000300000010000000240000000300000074ffffff57000000010000002b0000001b0000002400000009000000240000000300000074ffffff04000000100000001b000000090000002b000000530000002b00000017000000890000000300000074ffffff04000000100000001b0000002400000009000000240000000300000010000000240000000300000074ffffff57000000010000002b0000001b000000090000002b000000530000002b0000001700000033000000e00a00002c000000040000008900000003000000140000002c0000008800000030000000";
++		var encode1Base = 2440;
++		addMyFunc(file, encode1, "encode11", encode1Base);
++
++		var encode2 = "2e0000008900000089000000270000000000000089000000270000000000000033000000e40f0000890000006e000000f8ffffff03000000f8ffffff040000001000000040000000ac1000008900000085000000fcffffff2d000000000400002500000003000000f8ffffff040000000c0000001b0000002400000027000000c403000027000000080000007b000000000000002c0000000c0000002a00000024000000280000002c040000270000000c0000007b000000070000002c000000100000002d00000000fcffff8900000003000000f8ffffff040000000c0000001b0000002200000003000000fcffffff1700000033000000d80f00002c000000040000008900000003000000100000002c0000000400000030000000";
++		var encode2Base = 4016;
++		addMyFunc(file, encode2, "encode22", encode2Base);
++
++		var encode3 = "2e00000089000000890000002c000000fcffffff27000000d803000027000000040000007b000000090000002c0000000800000011000000fcffffff89000000270000000000000033000000b4120000890000006e000000f8ffffff03000000f8ffffff0400000010000000400000007c1300008900000003000000fcffffff2400000003000000f8ffffff040000000c0000001b0000000900000058000000adde00002b0000004e00000011000000fcffffff8900000003000000fcffffff570000000100000011000000fcffffff890000000b0000000010000004000000fcffffff4a0000002100000011000000fcffffff8900000003000000f8ffffff040000000c0000001b0000002200000003000000fcffffff1700000033000000a81200002c000000040000008900000003000000100000002c0000000400000030000000";
++		var encode3Base = 4696;
++		addMyFunc(file, encode3, "encode33", encode3Base);
++
+ 
+ 		// Parse methods for calls and globals which don't have debug info attached.
+ 		for (int i = 0; i < file.functions().length; i++) {
+diff --git a/src/main/java/lysis/PawnFile.java b/src/main/java/lysis/PawnFile.java
+index ae97c07..c832bf6 100644
+--- a/src/main/java/lysis/PawnFile.java
++++ b/src/main/java/lysis/PawnFile.java
+@@ -307,7 +307,7 @@ public abstract class PawnFile {
+ 		public int numSyms;
+ 	}
+ 
+-	public class Code {
++	public static class Code {
+ 		private byte[] code_;
+ 		private byte cellsize_;
+ 		private int flags_;
+diff --git a/src/main/java/lysis/builder/MethodParser.java b/src/main/java/lysis/builder/MethodParser.java
+index 29b7dcf..d3ad523 100644
+--- a/src/main/java/lysis/builder/MethodParser.java
++++ b/src/main/java/lysis/builder/MethodParser.java
+@@ -395,6 +395,9 @@ public class MethodParser {
+ 
+ 		case sysreq_c: {
+ 			long index = readUInt32();
++			if(index >= file_.natives().length){
++				return new LDebugBreak();
++			}
+ 			long prePeep = pc_;
+ 			SPOpcode nextOp = readOp();
+ 			int nextValue = readInt32();
+diff --git a/src/main/java/lysis/builder/SourceBuilder.java b/src/main/java/lysis/builder/SourceBuilder.java
+index 666b7a7..3d0774d 100644
+--- a/src/main/java/lysis/builder/SourceBuilder.java
++++ b/src/main/java/lysis/builder/SourceBuilder.java
+@@ -648,6 +648,10 @@ public class SourceBuilder {
+ 			return "(" + buildStore((DStore) node) + ")";
+ 		}
+ 
++		case Heap: {
++			return "";
++		}
++
+ 		default:
+ 			throw new Exception("Can't print expression: " + node.type());
+ 		}
+-- 
+2.28.0.windows.1
+

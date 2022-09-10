@@ -1,0 +1,8 @@
+{
+  "identifier": "misc-test-server",
+  "name": "Test Server",
+  "category": "misc",
+  "difficulty": "easy",
+  "flag": "justCTF{xd}",
+  "version": 1
+}

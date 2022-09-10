@@ -1,0 +1,7 @@
+{
+    "identifier": "pwn-dumpme",
+    "category": ["misc", "pwn"],
+    "difficulty": "medium",
+    "flag": "justCTF{tr4cing_blind_a1nt_that_h4rd}",
+    "version": 1
+}

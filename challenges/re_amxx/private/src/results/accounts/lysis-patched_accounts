@@ -1,0 +1,212 @@
+new MaxClients;
+new MapName[64];
+new String:NULL_STRING[4];
+new Float:NULL_VECTOR[3];
+new COD = 37;
+new DAT = 37;
+new g_nvault;
+new bool:logged[33];
+new kPlayerState:player_state[33];
+new account_menu;
+words_to_str(encoded[], encoded_len, bytes[], bytes_len)
+{
+	new i;
+	while (i < encoded_len)
+	{
+		fmt(COD, encoded[i]);
+		add(bytes, bytes_len, , MaxClients);
+		i++;
+	}
+	return 0;
+}
+
+public plugin_init()
+{
+	register_plugin("Account system", "21.37", "RiviT", 676, 680);
+	register_clcmd("say /menu", "cmd_menu", -1, 760, -1, MaxClients);
+	register_clcmd("say /login", "cmd_menu", -1, 760, -1, MaxClients);
+	register_clcmd("say /register", "cmd_menu", -1, 760, -1, MaxClients);
+	register_clcmd("radio1", "cmd_menu", -1, 760, -1, MaxClients);
+	register_clcmd("passwd", "handle_password_input", -1, 760, -1, MaxClients);
+	g_nvault = nvault_open("accounts");
+	create_menu();
+	return 0;
+}
+
+create_menu()
+{
+	account_menu = menu_create("Account system", "menu_handle", MaxClients);
+	menu_additem(account_menu, "Login", 1284, MaxClients, -1);
+	menu_additem(account_menu, "Register", 1284, MaxClients, -1);
+	return 0;
+}
+
+public plugin_end()
+{
+	nvault_close(g_nvault);
+	return 0;
+}
+
+public client_putinserver(id)
+{
+	logged[id] = 0;
+	player_state[id] = 0;
+	set_task(1123024896, "kick", id + 54321, 1344, MaxClients, 1348, MaxClients);
+	return 0;
+}
+
+public client_disconnect(id)
+{
+	logged[id] = 0;
+	player_state[id] = 0;
+	remove_task(id + 54321, MaxClients);
+	return 0;
+}
+
+public kick_player(id)
+{
+	return kick(id + 54321);
+}
+
+public kick(id)
+{
+	if (!is_user_connected(id))
+	{
+		return 0;
+	}
+	fmt("kick #%d", get_user_userid(id));
+	return server_cmd();
+}
+
+public cmd_menu(id)
+{
+	if (player_state[id] == kPlayerState:3)
+	{
+		return client_print(id, 3, "Already logged in");
+	}
+	return menu_display(id, account_menu, MaxClients, -1);
+}
+
+public cmd_login(id)
+{
+	if (player_state[id])
+	{
+		return 1;
+	}
+	new vault_data[512];
+	decl was_found;
+	fmt("%n", id);
+	was_found = nvault_get(g_nvault, , vault_data, 511);
+	if (!was_found)
+	{
+		client_print(id, 3, "Account with username: %n not found", id);
+		return 1;
+	}
+	player_state[id] = 2;
+	client_cmd(id, "messagemode passwd");
+	return 1;
+}
+
+public cmd_register(id)
+{
+	if (player_state[id])
+	{
+		return 1;
+	}
+	new vault_data[512];
+	decl was_found;
+	fmt("%n", id);
+	was_found = nvault_get(g_nvault, , vault_data, 511);
+	if (was_found)
+	{
+		client_print(id, 3, "Account with username: %n already exists", id);
+		return 1;
+	}
+	player_state[id] = 1;
+	client_cmd(id, "messagemode passwd");
+	return 1;
+}
+
+public menu_handle(id, menu, item)
+{
+	new var1;
+	if (item == -3 || !is_user_connected(id))
+	{
+		return 0;
+	}
+	new var2;
+	if (item)
+	{
+		var2 = cmd_register(id);
+	}
+	else
+	{
+		var2 = cmd_login(id);
+	}
+	return var2;
+}
+
+public handle_password_input(id)
+{
+	new var1;
+	if (player_state[id] != kPlayerState:1 && player_state[id] != kPlayerState:2)
+	{
+		return 1;
+	}
+	remove_task(id + 54321, MaxClients);
+	new password[192];
+	new vault_data[512];
+	new encoded[512];
+	new bytes_str[512];
+	new name[33];
+	get_user_name(id, name, 32);
+	new password_len = read_argv(1, password, 191);
+	new was_found = nvault_get(g_nvault, name, vault_data, 511);
+	new encoded_len = encode_password(id, password, password_len, encoded, 511);
+	words_to_str(encoded, encoded_len, bytes_str, 511);
+	switch (player_state[id])
+	{
+		case 1:
+		{
+			if (was_found)
+			{
+				player_state[id] = 0;
+				return client_print(id, 3, "Account with username: %n already exists", id);
+			}
+			if (password_len < 8)
+			{
+				player_state[id] = 0;
+				return client_print(id, 3, "Password too short!");
+			}
+			if (password_len > 32)
+			{
+				player_state[id] = 0;
+				return client_print(id, 3, "Password too long!");
+			}
+			nvault_set(g_nvault, name, bytes_str);
+			client_print(id, 3, "Register OK");
+			player_state[id] = 3;
+		}
+		case 2:
+		{
+			if (!was_found)
+			{
+				player_state[id] = 0;
+				return client_print(id, 3, "Account with username: %n not found", id);
+			}
+			if (!equal(vault_data, bytes_str, MaxClients))
+			{
+				client_print(id, 3, "Wrong password");
+				player_state[id] = 0;
+				return kick_player(id);
+			}
+			client_print(id, 3, "Login OK");
+			player_state[id] = 3;
+		}
+		default:
+		{
+		}
+	}
+	return 1;
+}
+

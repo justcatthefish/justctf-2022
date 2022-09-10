@@ -1,0 +1,1 @@
+Challenge dookoła buga w golangu gdzie http.ServeFile traktuje `\` jako prawidłowy argument w ścieżce a nie jako próba path traversala co powoduje problemy gdy argument jest używany przy budowaniu ścieżki zwracanego pliku w aplikacji.

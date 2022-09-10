@@ -1,0 +1,8 @@
+{
+    "identifier": "pwn-darksols",
+    "name": "Dark SOLs",
+    "category": ["pwn"],
+    "difficulty": "hard",
+    "flag": "justCTF{if_y0u_m1ss_1t,_y0u_mu5t_b3_bl1nd!}",
+    "version": 8
+}

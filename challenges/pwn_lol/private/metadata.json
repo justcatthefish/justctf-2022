@@ -1,0 +1,8 @@
+{
+  "identifier": "pwn-league-of-lamports",
+  "name": "League of Lamports",
+  "category": "pwn",
+  "difficulty": "easy",
+  "flag": "justCTF{All_towers_fall_it's_just_what_they_do_when_I'm_4r0und}",
+  "version": 10
+}

@@ -1,0 +1,3 @@
+**/target
+**/dist
+!**/solution_template/solution/dist

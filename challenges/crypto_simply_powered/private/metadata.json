@@ -1,0 +1,7 @@
+{
+    "identifier": "crypto-simply_powered",
+    "category": "crypto",
+    "difficulty": "easy",
+    "version": 3,
+    "flag": "justCTF{basic_math_just_fundametals}"
+}

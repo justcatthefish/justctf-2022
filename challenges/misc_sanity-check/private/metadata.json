@@ -1,0 +1,8 @@
+{
+  "identifier": "misc-sanity-check",
+  "name": "Sanity Check",
+  "category": "misc",
+  "difficulty": "easy",
+  "flag": "justCTF{something_h3re!}",
+  "version": 0
+}

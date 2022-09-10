@@ -1,0 +1,29 @@
+version: '2.4'
+
+services:
+  fastapi:
+    read_only: true
+    tmpfs:
+      - /tmp/
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    restart: "unless-stopped"
+    cap_drop:
+      - all
+    ports:
+      - "80:8181"
+    links:
+      - "xml:xml"
+    security_opt:
+      - no-new-privileges:true
+
+  xml:
+    read_only: true
+    build:
+      context: ./xml
+      dockerfile: Dockerfile
+    cap_drop:
+      - all
+    security_opt:
+      - no-new-privileges:true

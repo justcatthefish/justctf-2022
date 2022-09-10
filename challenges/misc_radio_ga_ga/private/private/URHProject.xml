@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<UniversalRadioHackerProject broadcast_address_hex="ffff" collapse_project_tabs="0" description="" modulation_was_edited="1">
+  <modulators>
+    <modulator bits_per_symbol="1" carrier_amplitude="1.0" carrier_freq_hz="100000.0" carrier_phase_deg="0.0" gauss_bt="0.5" gauss_filter_width="1.0" index="0" modulation_type="ASK" name="Modulator" parameters="0.0,100.0" sample_rate="None" samples_per_symbol="1000"/>
+  </modulators>
+  <device_conf>
+    <bandwidth>1000000.0</bandwidth>
+    <frequency>433920000.0</frequency>
+    <gain>20</gain>
+    <name>USRP</name>
+    <sample_rate>2000000.0</sample_rate>
+  </device_conf>
+  <simulator_rx_conf/>
+  <simulator_tx_conf/>
+  <signal bits_per_symbol="1" center="0.325361929833889" center_spacing="1" costas_loop_bandwidth="0.1" filename="generated.complex16s" message_length_divisor="1" modulation_type="ASK" name="generated" noise_maximum="0" noise_minimum="0" noise_threshold="0" pause_threshold="8" sample_rate="2000000.0" samples_per_symbol="1000" tolerance="1">
+    <messages/>
+  </signal>
+  <open_file name="generated.complex16s" position="0"/>
+  <signal bits_per_symbol="1" center="0.3173273354768753" center_spacing="1" costas_loop_bandwidth="0.1" filename="transmission.complex16s" message_length_divisor="1" modulation_type="ASK" name="transmission" noise_maximum="0" noise_minimum="0" noise_threshold="0" pause_threshold="8" sample_rate="2000000.0" samples_per_symbol="1000" tolerance="1">
+    <messages/>
+  </signal>
+  <open_file name="transmission.complex16s" position="1"/>
+  <group id="0" name="New Group">
+    <cf_protocol filename="generated.complex16s"/>
+    <cf_protocol filename="transmission.complex16s"/>
+  </group>
+  <protocol>
+    <decodings>
+      <decoding>'Non Return To Zero (NRZ)', </decoding>
+      <decoding>'Non Return To Zero + Invert', 'Invert', </decoding>
+      <decoding>'Manchester I', 'Edge Trigger', </decoding>
+      <decoding>'Manchester II', 'Edge Trigger', 'Invert', </decoding>
+      <decoding>'Differential Manchester', 'Edge Trigger', 'Differential Encoding', </decoding>
+      <decoding>'ppm_auriol', 'External Program', '/home/artur/prj/meteo/decoder.py;', </decoding>
+      <decoding>'ctf-ppm', 'External Program', '/home/artur/prj/ctf-ppm/decoder.py;/home/artur/prj/ctf-ppm/encoder.py', </decoding>
+    </decodings>
+    <participants>
+      <participant address_hex="" color_index="0" id="90b07f76-c450-4246-9968-07a8955dec02" name="Alice" relative_rssi="0" shortname="A" simulate="0"/>
+    </participants>
+    <messages>
+      <message decoding_index="6" message_type_id="0bcd5207-3a76-42cd-ac29-9f7c57ff3ca2" modulator_index="0" pause="999998" timestamp="1653245301.2525258"/>
+      <message decoding_index="6" message_type_id="0bcd5207-3a76-42cd-ac29-9f7c57ff3ca2" modulator_index="0" pause="999998" timestamp="1653245906.2667136"/>
+    </messages>
+    <message_types>
+      <message_type assigned_by_logic_analyzer="0" assigned_by_ruleset="0" id="0bcd5207-3a76-42cd-ac29-9f7c57ff3ca2" name="Default">
+        <label apply_decoding="True" auto_created="False" color_index="0" display_bit_order_index="0" display_endianness="big" display_format_index="2" end="384" fuzz_me="2" fuzz_values="" name="preamble" show="2" start="0"/>
+        <ruleset mode="0"/>
+      </message_type>
+    </message_types>
+  </protocol>
+  <simulator_config>
+    <items/>
+  </simulator_config>
+</UniversalRadioHackerProject>

@@ -1,0 +1,8 @@
+{
+    "identifier": "pwn-very-frosty",
+    "category": ["crypto"],
+    "difficulty": "hard",
+    "flag": "justCTF{Elsa_was_here!}",
+    "version": 1
+}
+

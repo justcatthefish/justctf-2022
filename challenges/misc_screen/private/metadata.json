@@ -1,0 +1,7 @@
+{
+    "identifier": "misc-screen",
+    "category": ["misc"],
+    "difficulty": "easy",
+    "version": 1,
+    "flag": "justCTF{data_tr4nsfer_i2c}"
+}

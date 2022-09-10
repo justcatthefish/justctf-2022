@@ -1,0 +1,19 @@
+version: '2.4'
+
+services:
+  manager:
+    build: .
+    restart: "unless-stopped"
+    volumes:
+      - /tmp/web_velociraptor/flag/flag.txt:/flag.txt:ro
+    ports:
+      - 80:80
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "30m"
+        max-file: "5"

@@ -1,0 +1,7 @@
+{
+    "identifier": "pwn-herpetology",
+    "category": "pwn",
+    "difficulty": "hard",
+    "flag": "justCTF{1earn_mor3_ab0ut_sn4kes_by_und3rfl0wing_st4ck}",
+    "version": 0
+}

@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+    <title>Symple Unzipper Challenge</title>
+    <meta name="keywords" content="CTF, Capture-The-Flag, Polyglot, Decompression, Web Server, Challenge, Security">
+    <meta name="description" content="Free Web tutorials">
+    <meta name="author" content="Evan Sultanik">
+</head>
+<body>
+<h1>Symple Unzipper Challenge</h1>
+<p>
+    Have you ever received a pesky ZIP file and not been able to extract it? No worries! This web server can do it for
+    you.
+</p>
+<p>
+    This web server has a REST API endpoint that will receive a ZIP file via HTTP POST and return a JSON object
+    containing the decompressed contents of every file inside the ZIP.
+</p>
+<p>
+    The <a href="/docs">API documentation is available here</a>. The documentation also includes forms to upload ZIP
+    files directly from your browser.
+</p>
+<h2>The Challenge</h2>
+<p>
+    Unfortunately, this server has a bug that can be exploited to exfiltrate local files. A flag has been saved in
+    a file named <code>flag.txt</code> in the same directory as the server code. Your job is to exploit the bug and get
+    the flag.
+</p>
+<p>
+    Solving the challenge does not involve denial of service or things like ZIP bombs. Please don't do that.
+    HINT: There is a special type of file you will need to craft.
+    <!-- SUPER SECRET HINT #2: check out https://github.com/corkami/mitra -->
+</p>
+<h2>The Code</h2>
+<p>
+    You can <a href="/server.tar.gz">download the source code to the server</a> (minus the flag file!).
+    It contains a <code>README.md</code> with further instructions.
+</p>
+<h2>License and Acknowledgements</h2>
+<p>
+    This code was created by <a href="https://www.sultanik.com/">Evan Sultanik</a> and is licensed and distributed under
+    the AGPLv3 license.
+</p>
+</body>
+</html>

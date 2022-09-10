@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<fuzz_profile>
+   <modulators>
+      <modulator bits_per_symbol="1" carrier_amplitude="1.0" carrier_freq_hz="100000.0" carrier_phase_deg="0.0" gauss_bt="0.5" gauss_filter_width="1.0" index="0" modulation_type="ASK" name="Modulator" parameters="0.0,100.0" sample_rate="None" samples_per_symbol="1000"/>
+   </modulators>
+   <decodings>
+      <decoding>'Non Return To Zero (NRZ)', </decoding>
+      <decoding>'Non Return To Zero + Invert', 'Invert', </decoding>
+      <decoding>'Manchester I', 'Edge Trigger', </decoding>
+      <decoding>'Manchester II', 'Edge Trigger', 'Invert', </decoding>
+      <decoding>'Differential Manchester', 'Edge Trigger', 'Differential Encoding', </decoding>
+      <decoding>'ppm_auriol', 'External Program', '/home/artur/prj/meteo/decoder.py;', </decoding>
+      <decoding>'ctf-ppm', 'External Program', '/home/artur/prj/ctf-ppm/decoder.py;/home/artur/prj/ctf-ppm/encoder.py', </decoding>
+   </decodings>
+   <participants>
+      <participant address_hex="" color_index="0" id="90b07f76-c450-4246-9968-07a8955dec02" name="Alice" relative_rssi="0" shortname="A" simulate="0"/>
+   </participants>
+   <messages>
+      <message bits="011010100111010101110011011101000100001101010100010001100111101101100010001100110101111101110001011101010011000100110011001101110101111100110000011100100101111100110111011010000011001101111001010111110111011100110001011011000110110001011111011010000011001100110100011100100101111101111001001100000111010101011111011000110110010001101101011011110110011001101110011100110110010001111101" decoding_index="6" message_type_id="b4352ca0-c8dc-45cf-b88d-f5d1d3453398" modulator_index="0" pause="1000000" timestamp="1651593630.833266">
+         <message_type assigned_by_logic_analyzer="0" assigned_by_ruleset="0" id="b4352ca0-c8dc-45cf-b88d-f5d1d3453398" name="Default">
+            <ruleset mode="0"/>
+         </message_type>
+      </message>
+   </messages>
+</fuzz_profile>

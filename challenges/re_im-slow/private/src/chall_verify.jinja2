@@ -1,0 +1,10 @@
+#pragma once
+
+
+using u32 = std::uint32_t;
+u32 chall_verify[][4] = {
+    {%- for data in picked_numbers %}
+    {{'{'}}
+    {%- for tdata in data %} {{tdata}}{{ "," if not loop.last }} {%- endfor %}{{'}'}}{{ "," if not loop.last }}
+    {%- endfor %}
+};

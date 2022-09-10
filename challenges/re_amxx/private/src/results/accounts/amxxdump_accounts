@@ -1,0 +1,739 @@
+
+0x8                        PROC              ; stock words_to_str(encoded[],encoded_len,bytes[],bytes_len)
+0xC                       BREAK 
+0x10                      BREAK 
+                                             ; new i
+0x14                     PUSH.C  0x0        
+0x1C                       JUMP  0x30       
+0x24                      BREAK 
+0x28                      INC.S  0xFFFFFFFC  ; i
+0x30                 LOAD.S.pri  0xFFFFFFFC  ; i
+0x38                 LOAD.S.alt  0x10        ; encoded_len
+0x40                      JSGEQ  0xD8       
+0x48                      BREAK 
+0x4C                     PUSH.C  0x0        
+0x54                       HEAP  0x400      
+0x5C                   PUSH.alt 
+0x60                 LOAD.S.pri  0xFFFFFFFC  ; i
+0x68                 LOAD.S.alt  0xC         ; encoded[]
+0x70                    IDXADDR 
+0x74                   PUSH.pri 
+0x78                     PUSH.C  0x114      
+0x80                     PUSH.C  0x8        
+0x88                   SYSREQ.C  0x0         ; fmt
+0x90                      STACK  0xC         ; free 3 cells
+0x98                    POP.pri 
+0x9C                   PUSH.pri 
+0xA0                     PUSH.S  0x18        ; bytes_len
+0xA8                     PUSH.S  0x14        ; bytes[]
+0xB0                     PUSH.C  0x10       
+0xB8                   SYSREQ.C  0x1         ; add
+0xC0                      STACK  0x14        ; free 5 cells
+0xC8                       HEAP  0xFFFFFC00 
+0xD0                       JUMP  0x24       
+0xD8                      STACK  0x4         ; free 1 cells
+0xE0                   ZERO.pri 
+0xE4                       RETN 
+0xE8                       PROC              ; public plugin_init()
+0xEC                      BREAK 
+0xF0                      BREAK 
+0xF4                     PUSH.C  0x2A8      
+0xFC                     PUSH.C  0x2A4      
+0x104                    PUSH.C  0x28C      
+0x10C                    PUSH.C  0x274      
+0x114                    PUSH.C  0x238      
+0x11C                    PUSH.C  0x14       
+0x124                  SYSREQ.C  0x2         ; register_plugin
+0x12C                     STACK  0x18        ; free 6 cells
+0x134                     BREAK 
+0x138                    PUSH.C  0x0        
+0x140                    PUSH.C  0xFFFFFFFF 
+0x148                    PUSH.C  0x2F8      
+0x150                    PUSH.C  0xFFFFFFFF 
+0x158                    PUSH.C  0x2D4      
+0x160                    PUSH.C  0x2AC      
+0x168                    PUSH.C  0x18       
+0x170                  SYSREQ.C  0x3         ; register_clcmd
+0x178                     STACK  0x1C        ; free 7 cells
+0x180                     BREAK 
+0x184                    PUSH.C  0x0        
+0x18C                    PUSH.C  0xFFFFFFFF 
+0x194                    PUSH.C  0x2F8      
+0x19C                    PUSH.C  0xFFFFFFFF 
+0x1A4                    PUSH.C  0x328      
+0x1AC                    PUSH.C  0x2FC      
+0x1B4                    PUSH.C  0x18       
+0x1BC                  SYSREQ.C  0x3         ; register_clcmd
+0x1C4                     STACK  0x1C        ; free 7 cells
+0x1CC                     BREAK 
+0x1D0                    PUSH.C  0x0        
+0x1D8                    PUSH.C  0xFFFFFFFF 
+0x1E0                    PUSH.C  0x2F8      
+0x1E8                    PUSH.C  0xFFFFFFFF 
+0x1F0                    PUSH.C  0x384      
+0x1F8                    PUSH.C  0x34C      
+0x200                    PUSH.C  0x18       
+0x208                  SYSREQ.C  0x3         ; register_clcmd
+0x210                     STACK  0x1C        ; free 7 cells
+0x218                     BREAK 
+0x21C                    PUSH.C  0x0        
+0x224                    PUSH.C  0xFFFFFFFF 
+0x22C                    PUSH.C  0x2F8      
+0x234                    PUSH.C  0xFFFFFFFF 
+0x23C                    PUSH.C  0x3C4      
+0x244                    PUSH.C  0x3A8      
+0x24C                    PUSH.C  0x18       
+0x254                  SYSREQ.C  0x3         ; register_clcmd
+0x25C                     STACK  0x1C        ; free 7 cells
+0x264                     BREAK 
+0x268                    PUSH.C  0x0        
+0x270                    PUSH.C  0xFFFFFFFF 
+0x278                    PUSH.C  0x2F8      
+0x280                    PUSH.C  0xFFFFFFFF 
+0x288                    PUSH.C  0x404      
+0x290                    PUSH.C  0x3E8      
+0x298                    PUSH.C  0x18       
+0x2A0                  SYSREQ.C  0x3         ; register_clcmd
+0x2A8                     STACK  0x1C        ; free 7 cells
+0x2B0                     BREAK 
+0x2B4                    PUSH.C  0x45C      
+0x2BC                    PUSH.C  0x4        
+0x2C4                  SYSREQ.C  0x4         ; nvault_open
+0x2CC                     STACK  0x8         ; free 2 cells
+0x2D4                  STOR.pri  0x128       ; g_nvault
+0x2DC                     BREAK 
+0x2E0                    PUSH.C  0x0        
+0x2E8                      CALL  0x2F8       ; stock create_menu()
+0x2F0                  ZERO.pri 
+0x2F4                      RETN 
+0x2F8                      PROC              ; stock create_menu()
+0x2FC                     BREAK 
+0x300                     BREAK 
+0x304                    PUSH.C  0x0        
+0x30C                    PUSH.C  0x4BC      
+0x314                    PUSH.C  0x480      
+0x31C                    PUSH.C  0xC        
+0x324                  SYSREQ.C  0x5         ; menu_create
+0x32C                     STACK  0x10        ; free 4 cells
+0x334                  STOR.pri  0x234       ; account_menu
+0x33C                     BREAK 
+0x340                    PUSH.C  0xFFFFFFFF 
+0x348                    PUSH.C  0x0        
+0x350                    PUSH.C  0x504      
+0x358                    PUSH.C  0x4EC      
+0x360                      PUSH  0x234       ; account_menu
+0x368                    PUSH.C  0x14       
+0x370                  SYSREQ.C  0x6         ; menu_additem
+0x378                     STACK  0x18        ; free 6 cells
+0x380                     BREAK 
+0x384                    PUSH.C  0xFFFFFFFF 
+0x38C                    PUSH.C  0x0        
+0x394                    PUSH.C  0x504      
+0x39C                    PUSH.C  0x508      
+0x3A4                      PUSH  0x234       ; account_menu
+0x3AC                    PUSH.C  0x14       
+0x3B4                  SYSREQ.C  0x6         ; menu_additem
+0x3BC                     STACK  0x18        ; free 6 cells
+0x3C4                  ZERO.pri 
+0x3C8                      RETN 
+0x3CC                      PROC              ; public plugin_end()
+0x3D0                     BREAK 
+0x3D4                     BREAK 
+0x3D8                      PUSH  0x128       ; g_nvault
+0x3E0                    PUSH.C  0x4        
+0x3E8                  SYSREQ.C  0x7         ; nvault_close
+0x3F0                     STACK  0x8         ; free 2 cells
+0x3F8                  ZERO.pri 
+0x3FC                      RETN 
+0x400                      PROC              ; public client_putinserver(id)
+0x404                     BREAK 
+0x408                     BREAK 
+0x40C                 CONST.alt  0x12C      
+0x414                LOAD.S.pri  0xC         ; id
+0x41C                    BOUNDS  0x20       
+0x424                   IDXADDR 
+0x428                  MOVE.alt 
+0x42C                  ZERO.pri 
+0x430                    STOR.I 
+0x434                     BREAK 
+0x438                 CONST.alt  0x1B0      
+0x440                LOAD.S.pri  0xC         ; id
+0x448                    BOUNDS  0x20       
+0x450                   IDXADDR 
+0x454                  MOVE.alt 
+0x458                  ZERO.pri 
+0x45C                    STOR.I 
+0x460                     BREAK 
+0x464                    PUSH.C  0x0        
+0x46C                    PUSH.C  0x544      
+0x474                    PUSH.C  0x0        
+0x47C                    PUSH.C  0x540      
+0x484                LOAD.S.pri  0xC         ; id
+0x48C                     ADD.C  0xD431      ; signed:  54321
+0x494                  PUSH.pri 
+0x498                    PUSH.C  0x52C      
+0x4A0                    PUSH.C  0x42F00000 
+0x4A8                    PUSH.C  0x1C       
+0x4B0                  SYSREQ.C  0x8         ; set_task
+0x4B8                     STACK  0x20        ; free 8 cells
+0x4C0                  ZERO.pri 
+0x4C4                      RETN 
+0x4C8                      PROC              ; public client_disconnect(id)
+0x4CC                     BREAK 
+0x4D0                     BREAK 
+0x4D4                 CONST.alt  0x12C      
+0x4DC                LOAD.S.pri  0xC         ; id
+0x4E4                    BOUNDS  0x20       
+0x4EC                   IDXADDR 
+0x4F0                  MOVE.alt 
+0x4F4                  ZERO.pri 
+0x4F8                    STOR.I 
+0x4FC                     BREAK 
+0x500                 CONST.alt  0x1B0      
+0x508                LOAD.S.pri  0xC         ; id
+0x510                    BOUNDS  0x20       
+0x518                   IDXADDR 
+0x51C                  MOVE.alt 
+0x520                  ZERO.pri 
+0x524                    STOR.I 
+0x528                     BREAK 
+0x52C                    PUSH.C  0x0        
+0x534                LOAD.S.pri  0xC         ; id
+0x53C                     ADD.C  0xD431      ; signed:  54321
+0x544                  PUSH.pri 
+0x548                    PUSH.C  0x8        
+0x550                  SYSREQ.C  0x9         ; remove_task
+0x558                     STACK  0xC         ; free 3 cells
+0x560                  ZERO.pri 
+0x564                      RETN 
+0x568                      PROC              ; public kick_player(id)
+0x56C                     BREAK 
+0x570                     BREAK 
+0x574                LOAD.S.pri  0xC         ; id
+0x57C                     ADD.C  0xD431      ; signed:  54321
+0x584                  PUSH.pri 
+0x588                    PUSH.C  0x4        
+0x590                      CALL  0x59C       ; public kick(id)
+0x598                      RETN 
+0x59C                      PROC              ; public kick(id)
+0x5A0                     BREAK 
+0x5A4                     BREAK 
+0x5A8                LOAD.S.pri  0xC         ; id
+0x5B0                     ADD.C  0xFFFF2BCF  ; signed:  -54321
+0x5B8                STOR.S.pri  0xC         ; id
+0x5C0                     BREAK 
+0x5C4                    PUSH.S  0xC         ; id
+0x5CC                    PUSH.C  0x4        
+0x5D4                  SYSREQ.C  0xA         ; is_user_connected
+0x5DC                     STACK  0x8         ; free 2 cells
+0x5E4                       NOT 
+0x5E8                      JZER  0x5FC      
+0x5F0                     BREAK 
+0x5F4                  ZERO.pri 
+0x5F8                      RETN 
+0x5FC                     BREAK 
+0x600                      HEAP  0x400      
+0x608                  PUSH.alt 
+0x60C                    PUSH.S  0xC         ; id
+0x614                    PUSH.C  0x4        
+0x61C                  SYSREQ.C  0xB         ; get_user_userid
+0x624                     STACK  0x8         ; free 2 cells
+0x62C                      HEAP  0x4        
+0x634                    STOR.I 
+0x638                  PUSH.alt 
+0x63C                    PUSH.C  0x548      
+0x644                    PUSH.C  0x8        
+0x64C                  SYSREQ.C  0x0         ; fmt
+0x654                     STACK  0xC         ; free 3 cells
+0x65C                      HEAP  0xFFFFFFFC 
+0x664                   POP.pri 
+0x668                  PUSH.pri 
+0x66C                    PUSH.C  0x4        
+0x674                  SYSREQ.C  0xC         ; server_cmd
+0x67C                     STACK  0x8         ; free 2 cells
+0x684                      HEAP  0xFFFFFC00 
+0x68C                      RETN 
+0x690                      PROC              ; public cmd_menu(id)
+0x694                     BREAK 
+0x698                     BREAK 
+0x69C                 CONST.alt  0x1B0      
+0x6A4                LOAD.S.pri  0xC         ; id
+0x6AC                    BOUNDS  0x20       
+0x6B4                      LIDX 
+0x6B8                  EQ.C.pri  0x3        
+0x6C0                      JZER  0x700      
+0x6C8                     BREAK 
+0x6CC                    PUSH.C  0x56C      
+0x6D4                    PUSH.C  0x3        
+0x6DC                    PUSH.S  0xC         ; id
+0x6E4                    PUSH.C  0xC        
+0x6EC                  SYSREQ.C  0xD         ; client_print
+0x6F4                     STACK  0x10        ; free 4 cells
+0x6FC                      RETN 
+0x700                     BREAK 
+0x704                    PUSH.C  0xFFFFFFFF 
+0x70C                    PUSH.C  0x0        
+0x714                      PUSH  0x234       ; account_menu
+0x71C                    PUSH.S  0xC         ; id
+0x724                    PUSH.C  0x10       
+0x72C                  SYSREQ.C  0xE         ; menu_display
+0x734                     STACK  0x14        ; free 5 cells
+0x73C                      RETN 
+0x740                      PROC              ; public cmd_login(id)
+0x744                     BREAK 
+0x748                     BREAK 
+0x74C                 CONST.alt  0x1B0      
+0x754                LOAD.S.pri  0xC         ; id
+0x75C                    BOUNDS  0x20       
+0x764                      LIDX 
+0x768                      JZER  0x780      
+0x770                     BREAK 
+0x774                 CONST.pri  0x1        
+0x77C                      RETN 
+0x780                     BREAK 
+                                             ; new vault_data[512]
+0x784                     STACK  0xFFFFF800  ; allocate 512 cells
+0x78C                  ZERO.pri 
+0x790                  ADDR.alt  0xFFFFF800 
+0x798                      FILL  0x800       ; 512 cells
+0x7A0                     BREAK 
+                                             ; new was_found
+0x7A4                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0x7AC                 CONST.pri  0x1FF      
+0x7B4                      HEAP  0x4        
+0x7BC                    STOR.I 
+0x7C0                  PUSH.alt 
+0x7C4                  PUSH.ADR  0xFFFFF800  ; vault_data[512]
+0x7CC                      HEAP  0x400      
+0x7D4                  PUSH.alt 
+0x7D8                  PUSH.ADR  0xC         ; id
+0x7E0                    PUSH.C  0x5B4      
+0x7E8                    PUSH.C  0x8        
+0x7F0                  SYSREQ.C  0x0         ; fmt
+0x7F8                     STACK  0xC         ; free 3 cells
+0x800                   POP.pri 
+0x804                  PUSH.pri 
+0x808                      PUSH  0x128       ; g_nvault
+0x810                    PUSH.C  0x10       
+0x818                  SYSREQ.C  0xF         ; nvault_get
+0x820                     STACK  0x14        ; free 5 cells
+0x828                      HEAP  0xFFFFFFFC 
+0x830                      HEAP  0xFFFFFC00 
+0x838                STOR.S.pri  0xFFFFF7FC  ; was_found
+0x840                     BREAK 
+0x844                LOAD.S.pri  0xFFFFF7FC  ; was_found
+0x84C                       NOT 
+0x850                      JZER  0x8AC      
+0x858                     BREAK 
+0x85C                  PUSH.ADR  0xC         ; id
+0x864                    PUSH.C  0x5C0      
+0x86C                    PUSH.C  0x3        
+0x874                    PUSH.S  0xC         ; id
+0x87C                    PUSH.C  0x10       
+0x884                  SYSREQ.C  0xD         ; client_print
+0x88C                     STACK  0x14        ; free 5 cells
+0x894                     BREAK 
+0x898                 CONST.pri  0x1        
+0x8A0                     STACK  0x804       ; free 513 cells
+0x8A8                      RETN 
+0x8AC                     BREAK 
+0x8B0                 CONST.alt  0x1B0      
+0x8B8                LOAD.S.pri  0xC         ; id
+0x8C0                    BOUNDS  0x20       
+0x8C8                   IDXADDR 
+0x8CC                  MOVE.alt 
+0x8D0                 CONST.pri  0x2        
+0x8D8                    STOR.I 
+0x8DC                     BREAK 
+0x8E0                    PUSH.C  0x650      
+0x8E8                    PUSH.S  0xC         ; id
+0x8F0                    PUSH.C  0x8        
+0x8F8                  SYSREQ.C  0x10        ; client_cmd
+0x900                     STACK  0xC         ; free 3 cells
+0x908                     BREAK 
+0x90C                 CONST.pri  0x1        
+0x914                     STACK  0x804       ; free 513 cells
+0x91C                      RETN 
+0x920                      PROC              ; public cmd_register(id)
+0x924                     BREAK 
+0x928                     BREAK 
+0x92C                 CONST.alt  0x1B0      
+0x934                LOAD.S.pri  0xC         ; id
+0x93C                    BOUNDS  0x20       
+0x944                      LIDX 
+0x948                      JZER  0x960      
+0x950                     BREAK 
+0x954                 CONST.pri  0x1        
+0x95C                      RETN 
+0x960                     BREAK 
+                                             ; new vault_data[512]
+0x964                     STACK  0xFFFFF800  ; allocate 512 cells
+0x96C                  ZERO.pri 
+0x970                  ADDR.alt  0xFFFFF800 
+0x978                      FILL  0x800       ; 512 cells
+0x980                     BREAK 
+                                             ; new was_found
+0x984                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0x98C                 CONST.pri  0x1FF      
+0x994                      HEAP  0x4        
+0x99C                    STOR.I 
+0x9A0                  PUSH.alt 
+0x9A4                  PUSH.ADR  0xFFFFF800  ; vault_data[512]
+0x9AC                      HEAP  0x400      
+0x9B4                  PUSH.alt 
+0x9B8                  PUSH.ADR  0xC         ; id
+0x9C0                    PUSH.C  0x69C      
+0x9C8                    PUSH.C  0x8        
+0x9D0                  SYSREQ.C  0x0         ; fmt
+0x9D8                     STACK  0xC         ; free 3 cells
+0x9E0                   POP.pri 
+0x9E4                  PUSH.pri 
+0x9E8                      PUSH  0x128       ; g_nvault
+0x9F0                    PUSH.C  0x10       
+0x9F8                  SYSREQ.C  0xF         ; nvault_get
+0xA00                     STACK  0x14        ; free 5 cells
+0xA08                      HEAP  0xFFFFFFFC 
+0xA10                      HEAP  0xFFFFFC00 
+0xA18                STOR.S.pri  0xFFFFF7FC  ; was_found
+0xA20                     BREAK 
+0xA24                LOAD.S.pri  0xFFFFF7FC  ; was_found
+0xA2C                      JZER  0xA88      
+0xA34                     BREAK 
+0xA38                  PUSH.ADR  0xC         ; id
+0xA40                    PUSH.C  0x6A8      
+0xA48                    PUSH.C  0x3        
+0xA50                    PUSH.S  0xC         ; id
+0xA58                    PUSH.C  0x10       
+0xA60                  SYSREQ.C  0xD         ; client_print
+0xA68                     STACK  0x14        ; free 5 cells
+0xA70                     BREAK 
+0xA74                 CONST.pri  0x1        
+0xA7C                     STACK  0x804       ; free 513 cells
+0xA84                      RETN 
+0xA88                     BREAK 
+0xA8C                 CONST.alt  0x1B0      
+0xA94                LOAD.S.pri  0xC         ; id
+0xA9C                    BOUNDS  0x20       
+0xAA4                   IDXADDR 
+0xAA8                  MOVE.alt 
+0xAAC                 CONST.pri  0x1        
+0xAB4                    STOR.I 
+0xAB8                     BREAK 
+0xABC                    PUSH.C  0x74C      
+0xAC4                    PUSH.S  0xC         ; id
+0xACC                    PUSH.C  0x8        
+0xAD4                  SYSREQ.C  0x10        ; client_cmd
+0xADC                     STACK  0xC         ; free 3 cells
+0xAE4                     BREAK 
+0xAE8                 CONST.pri  0x1        
+0xAF0                     STACK  0x804       ; free 513 cells
+0xAF8                      RETN 
+0xAFC                      PROC              ; public menu_handle(id,menu,item)
+0xB00                     BREAK 
+0xB04                     BREAK 
+0xB08                LOAD.S.pri  0x14        ; item
+0xB10                  EQ.C.pri  0xFFFFFFFD 
+0xB18                       JNZ  0xB58      
+0xB20                    PUSH.S  0xC         ; id
+0xB28                    PUSH.C  0x4        
+0xB30                  SYSREQ.C  0xA         ; is_user_connected
+0xB38                     STACK  0x8         ; free 2 cells
+0xB40                       NOT 
+0xB44                       JNZ  0xB58      
+0xB4C                  ZERO.pri 
+0xB50                      JUMP  0xB60      
+0xB58                 CONST.pri  0x1        
+0xB60                      JZER  0xB74      
+0xB68                     BREAK 
+0xB6C                  ZERO.pri 
+0xB70                      RETN 
+0xB74                     BREAK 
+0xB78                LOAD.S.pri  0x14        ; item
+0xB80                       JNZ  0xBA8      
+0xB88                    PUSH.S  0xC         ; id
+0xB90                    PUSH.C  0x4        
+0xB98                      CALL  0x740       ; public cmd_login(id)
+0xBA0                      JUMP  0xBC0      
+0xBA8                    PUSH.S  0xC         ; id
+0xBB0                    PUSH.C  0x4        
+0xBB8                      CALL  0x920       ; public cmd_register(id)
+0xBC0                      RETN 
+0xBC4                      PROC              ; public handle_password_input(id)
+0xBC8                     BREAK 
+0xBCC                     BREAK 
+0xBD0                 CONST.alt  0x1B0      
+0xBD8                LOAD.S.pri  0xC         ; id
+0xBE0                    BOUNDS  0x20       
+0xBE8                      LIDX 
+0xBEC                 CONST.alt  0x1        
+0xBF4                       JEQ  0xC38      
+0xBFC                 CONST.alt  0x1B0      
+0xC04                LOAD.S.pri  0xC         ; id
+0xC0C                    BOUNDS  0x20       
+0xC14                      LIDX 
+0xC18                 CONST.alt  0x2        
+0xC20                       JEQ  0xC38      
+0xC28                 CONST.pri  0x1        
+0xC30                      JUMP  0xC3C      
+0xC38                  ZERO.pri 
+0xC3C                      JZER  0xC54      
+0xC44                     BREAK 
+0xC48                 CONST.pri  0x1        
+0xC50                      RETN 
+0xC54                     BREAK 
+0xC58                    PUSH.C  0x0        
+0xC60                LOAD.S.pri  0xC         ; id
+0xC68                     ADD.C  0xD431      ; signed:  54321
+0xC70                  PUSH.pri 
+0xC74                    PUSH.C  0x8        
+0xC7C                  SYSREQ.C  0x9         ; remove_task
+0xC84                     STACK  0xC         ; free 3 cells
+0xC8C                     BREAK 
+                                             ; new password[192]
+0xC90                     STACK  0xFFFFFD00  ; allocate 192 cells
+0xC98                  ZERO.pri 
+0xC9C                  ADDR.alt  0xFFFFFD00 
+0xCA4                      FILL  0x300       ; 192 cells
+                                             ; new vault_data[512]
+0xCAC                     STACK  0xFFFFF800  ; allocate 512 cells
+0xCB4                  ZERO.pri 
+0xCB8                  ADDR.alt  0xFFFFF500 
+0xCC0                      FILL  0x800       ; 512 cells
+                                             ; new encoded[512]
+0xCC8                     STACK  0xFFFFF800  ; allocate 512 cells
+0xCD0                  ZERO.pri 
+0xCD4                  ADDR.alt  0xFFFFED00 
+0xCDC                      FILL  0x800       ; 512 cells
+                                             ; new bytes_str[512]
+0xCE4                     STACK  0xFFFFF800  ; allocate 512 cells
+0xCEC                  ZERO.pri 
+0xCF0                  ADDR.alt  0xFFFFE500 
+0xCF8                      FILL  0x800       ; 512 cells
+0xD00                     BREAK 
+                                             ; new name[33]
+0xD04                     STACK  0xFFFFFF7C  ; allocate 33 cells
+0xD0C                  ZERO.pri 
+0xD10                  ADDR.alt  0xFFFFE47C 
+0xD18                      FILL  0x84        ; 33 cells
+0xD20                     BREAK 
+0xD24                    PUSH.C  0x20       
+0xD2C                  PUSH.ADR  0xFFFFE47C  ; name[33]
+0xD34                    PUSH.S  0xC         ; id
+0xD3C                    PUSH.C  0xC        
+0xD44                  SYSREQ.C  0x11        ; get_user_name
+0xD4C                     STACK  0x10        ; free 4 cells
+0xD54                     BREAK 
+                                             ; new password_len
+0xD58                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xD60                    PUSH.C  0xBF       
+0xD68                  PUSH.ADR  0xFFFFFD00  ; password[192]
+0xD70                    PUSH.C  0x1        
+0xD78                    PUSH.C  0xC        
+0xD80                  SYSREQ.C  0x12        ; read_argv
+0xD88                     STACK  0x10        ; free 4 cells
+0xD90                STOR.S.pri  0xFFFFE478  ; password_len
+0xD98                     BREAK 
+                                             ; new was_found
+0xD9C                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xDA4                 CONST.pri  0x1FF      
+0xDAC                      HEAP  0x4        
+0xDB4                    STOR.I 
+0xDB8                  PUSH.alt 
+0xDBC                  PUSH.ADR  0xFFFFF500  ; vault_data[512]
+0xDC4                  PUSH.ADR  0xFFFFE47C  ; name[33]
+0xDCC                      PUSH  0x128       ; g_nvault
+0xDD4                    PUSH.C  0x10       
+0xDDC                  SYSREQ.C  0xF         ; nvault_get
+0xDE4                     STACK  0x14        ; free 5 cells
+0xDEC                      HEAP  0xFFFFFFFC 
+0xDF4                STOR.S.pri  0xFFFFE474  ; was_found
+0xDFC                     BREAK 
+                                             ; new encoded_len
+0xE00                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xE08                    PUSH.C  0x1FF      
+0xE10                  PUSH.ADR  0xFFFFED00  ; encoded[512]
+0xE18                    PUSH.S  0xFFFFE478  ; password_len
+0xE20                  PUSH.ADR  0xFFFFFD00  ; password[192]
+0xE28                    PUSH.S  0xC         ; id
+0xE30                    PUSH.C  0x14       
+0xE38                  SYSREQ.C  0x13        ; encode_password
+0xE40                     STACK  0x18        ; free 6 cells
+0xE48                STOR.S.pri  0xFFFFE470  ; encoded_len
+0xE50                     BREAK 
+0xE54                    PUSH.C  0x1FF      
+0xE5C                  PUSH.ADR  0xFFFFE500  ; bytes_str[512]
+0xE64                    PUSH.S  0xFFFFE470  ; encoded_len
+0xE6C                  PUSH.ADR  0xFFFFED00  ; encoded[512]
+0xE74                    PUSH.C  0x10       
+0xE7C                      CALL  0x8         ; stock words_to_str(encoded[],encoded_len,bytes[],bytes_len)
+0xE84                     BREAK 
+0xE88                 CONST.alt  0x1B0      
+0xE90                LOAD.S.pri  0xC         ; id
+0xE98                    BOUNDS  0x20       
+0xEA0                      LIDX 
+0xEA4                    SWITCH  0x12A4     
+0xEAC                     BREAK 
+0xEB0                LOAD.S.pri  0xFFFFE474  ; was_found
+0xEB8                       NOT 
+0xEBC                      JZER  0xF38      
+0xEC4                     BREAK 
+0xEC8                 CONST.alt  0x1B0      
+0xED0                LOAD.S.pri  0xC         ; id
+0xED8                    BOUNDS  0x20       
+0xEE0                   IDXADDR 
+0xEE4                  MOVE.alt 
+0xEE8                  ZERO.pri 
+0xEEC                    STOR.I 
+0xEF0                     BREAK 
+0xEF4                  PUSH.ADR  0xC         ; id
+0xEFC                    PUSH.C  0x798      
+0xF04                    PUSH.C  0x3        
+0xF0C                    PUSH.S  0xC         ; id
+0xF14                    PUSH.C  0x10       
+0xF1C                  SYSREQ.C  0xD         ; client_print
+0xF24                     STACK  0x14        ; free 5 cells
+0xF2C                     STACK  0x1B90      ; free 1764 cells
+0xF34                      RETN 
+0xF38                     BREAK 
+0xF3C                    PUSH.C  0x0        
+0xF44                  PUSH.ADR  0xFFFFE500  ; bytes_str[512]
+0xF4C                  PUSH.ADR  0xFFFFF500  ; vault_data[512]
+0xF54                    PUSH.C  0xC        
+0xF5C                  SYSREQ.C  0x14        ; equal
+0xF64                     STACK  0x10        ; free 4 cells
+0xF6C                       NOT 
+0xF70                      JZER  0x1000     
+0xF78                     BREAK 
+0xF7C                    PUSH.C  0x828      
+0xF84                    PUSH.C  0x3        
+0xF8C                    PUSH.S  0xC         ; id
+0xF94                    PUSH.C  0xC        
+0xF9C                  SYSREQ.C  0xD         ; client_print
+0xFA4                     STACK  0x10        ; free 4 cells
+0xFAC                     BREAK 
+0xFB0                 CONST.alt  0x1B0      
+0xFB8                LOAD.S.pri  0xC         ; id
+0xFC0                    BOUNDS  0x20       
+0xFC8                   IDXADDR 
+0xFCC                  MOVE.alt 
+0xFD0                  ZERO.pri 
+0xFD4                    STOR.I 
+0xFD8                     BREAK 
+0xFDC                    PUSH.S  0xC         ; id
+0xFE4                    PUSH.C  0x4        
+0xFEC                      CALL  0x568       ; public kick_player(id)
+0xFF4                     STACK  0x1B90      ; free 1764 cells
+0xFFC                      RETN 
+0x1000                    BREAK 
+0x1004                   PUSH.C  0x864      
+0x100C                   PUSH.C  0x3        
+0x1014                   PUSH.S  0xC         ; id
+0x101C                   PUSH.C  0xC        
+0x1024                 SYSREQ.C  0xD         ; client_print
+0x102C                    STACK  0x10        ; free 4 cells
+0x1034                    BREAK 
+0x1038                CONST.alt  0x1B0      
+0x1040               LOAD.S.pri  0xC         ; id
+0x1048                   BOUNDS  0x20       
+0x1050                  IDXADDR 
+0x1054                 MOVE.alt 
+0x1058                CONST.pri  0x3        
+0x1060                   STOR.I 
+0x1064                     JUMP  0x12C0     
+0x106C                    BREAK 
+0x1070               LOAD.S.pri  0xFFFFE474  ; was_found
+0x1078                     JZER  0x10F4     
+0x1080                    BREAK 
+0x1084                CONST.alt  0x1B0      
+0x108C               LOAD.S.pri  0xC         ; id
+0x1094                   BOUNDS  0x20       
+0x109C                  IDXADDR 
+0x10A0                 MOVE.alt 
+0x10A4                 ZERO.pri 
+0x10A8                   STOR.I 
+0x10AC                    BREAK 
+0x10B0                 PUSH.ADR  0xC         ; id
+0x10B8                   PUSH.C  0x888      
+0x10C0                   PUSH.C  0x3        
+0x10C8                   PUSH.S  0xC         ; id
+0x10D0                   PUSH.C  0x10       
+0x10D8                 SYSREQ.C  0xD         ; client_print
+0x10E0                    STACK  0x14        ; free 5 cells
+0x10E8                    STACK  0x1B90      ; free 1764 cells
+0x10F0                     RETN 
+0x10F4                    BREAK 
+0x10F8               LOAD.S.pri  0xFFFFE478  ; password_len
+0x1100                CONST.alt  0x8        
+0x1108                    JSGEQ  0x117C     
+0x1110                    BREAK 
+0x1114                CONST.alt  0x1B0      
+0x111C               LOAD.S.pri  0xC         ; id
+0x1124                   BOUNDS  0x20       
+0x112C                  IDXADDR 
+0x1130                 MOVE.alt 
+0x1134                 ZERO.pri 
+0x1138                   STOR.I 
+0x113C                    BREAK 
+0x1140                   PUSH.C  0x92C      
+0x1148                   PUSH.C  0x3        
+0x1150                   PUSH.S  0xC         ; id
+0x1158                   PUSH.C  0xC        
+0x1160                 SYSREQ.C  0xD         ; client_print
+0x1168                    STACK  0x10        ; free 4 cells
+0x1170                    STACK  0x1B90      ; free 1764 cells
+0x1178                     RETN 
+0x117C                    BREAK 
+0x1180               LOAD.S.pri  0xFFFFE478  ; password_len
+0x1188                CONST.alt  0x20       
+0x1190                    JSLEQ  0x1204     
+0x1198                    BREAK 
+0x119C                CONST.alt  0x1B0      
+0x11A4               LOAD.S.pri  0xC         ; id
+0x11AC                   BOUNDS  0x20       
+0x11B4                  IDXADDR 
+0x11B8                 MOVE.alt 
+0x11BC                 ZERO.pri 
+0x11C0                   STOR.I 
+0x11C4                    BREAK 
+0x11C8                   PUSH.C  0x97C      
+0x11D0                   PUSH.C  0x3        
+0x11D8                   PUSH.S  0xC         ; id
+0x11E0                   PUSH.C  0xC        
+0x11E8                 SYSREQ.C  0xD         ; client_print
+0x11F0                    STACK  0x10        ; free 4 cells
+0x11F8                    STACK  0x1B90      ; free 1764 cells
+0x1200                     RETN 
+0x1204                    BREAK 
+0x1208                 PUSH.ADR  0xFFFFE500  ; bytes_str[512]
+0x1210                 PUSH.ADR  0xFFFFE47C  ; name[33]
+0x1218                     PUSH  0x128       ; g_nvault
+0x1220                   PUSH.C  0xC        
+0x1228                 SYSREQ.C  0x15        ; nvault_set
+0x1230                    STACK  0x10        ; free 4 cells
+0x1238                    BREAK 
+0x123C                   PUSH.C  0x9C8      
+0x1244                   PUSH.C  0x3        
+0x124C                   PUSH.S  0xC         ; id
+0x1254                   PUSH.C  0xC        
+0x125C                 SYSREQ.C  0xD         ; client_print
+0x1264                    STACK  0x10        ; free 4 cells
+0x126C                    BREAK 
+0x1270                CONST.alt  0x1B0      
+0x1278               LOAD.S.pri  0xC         ; id
+0x1280                   BOUNDS  0x20       
+0x1288                  IDXADDR 
+0x128C                 MOVE.alt 
+0x1290                CONST.pri  0x3        
+0x1298                   STOR.I 
+0x129C                     JUMP  0x12C0     
+0x12A4                  CASETBL 
+0x12AC                 CASENONE  0x12C0      ; default
+0x12B0                     CASE  0x1        
+0x12B4                 CASEJUMP  0x106C     
+0x12B8                     CASE  0x2        
+0x12BC                 CASEJUMP  0xEAC      
+                                             ; End of CASETBL
+0x12C0                    BREAK 
+0x12C4                CONST.pri  0x1        
+0x12CC                    STACK  0x1B90      ; free 1764 cells
+0x12D4                     RETN 

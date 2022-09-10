@@ -1,0 +1,119 @@
+new MaxClients;
+new MapName[64];
+new String:NULL_STRING[4];
+new Float:NULL_VECTOR[3];
+new COD = 16;
+new DAT = 16;
+new Handle:g_sql_tuple;
+new db_forward;
+new data[2048];
+Handle:SQL_MakeStdTuple(timeout)
+{
+	static db[128];
+	static pass[32];
+	static user[32];
+	static host[64];
+	static set_type[12];
+	static get_type[12];
+	get_cvar_string("amx_sql_host", host, 63);
+	get_cvar_string("amx_sql_user", user, 31);
+	get_cvar_string("amx_sql_pass", pass, 31);
+	get_cvar_string("amx_sql_type", set_type, 11);
+	get_cvar_string("amx_sql_db", db, 127);
+	if (0 >= timeout)
+	{
+		timeout = get_cvar_num("amx_sql_timeout");
+	}
+	SQL_GetAffinity(get_type, 12);
+	if (!equali(get_type, set_type, MaxClients))
+	{
+		if (!SQL_SetAffinity(set_type))
+		{
+			log_amx("Failed to set affinity from %s to %s.", get_type, set_type);
+		}
+	}
+	return SQL_MakeDbTuple(host, user, pass, db, timeout);
+}
+
+unhex(data[], size)
+{
+	new j;
+	new parts[4][3] = COD;
+	new parts_val[4];
+	new i;
+	while (i < size)
+	{
+		new k;
+		while (k < 4)
+		{
+			copy(parts[k], 2, data[k * 2 + i]);
+			parts_val[k] = strtol(parts[k], 0, 16);
+			k++;
+		}
+		new v = parts_val[0] & 255 | parts_val[1] & 255 << 8 | parts_val[2] & 255 << 16 | parts_val[3] & 255 << 24;
+		j++;
+		data[j] = v;
+		i += 8;
+	}
+	return j;
+}
+
+public plugin_init()
+{
+	register_plugin("DB", "13.37", "RiviT", 1948, 1952);
+	db_forward = CreateMultiForward("db_results_ready", 3, 4, 4, 0, 0);
+	register_cvar("amx_sql_host", "127.0.0.1", 32, MaxClients);
+	register_cvar("amx_sql_user", "root", 32, MaxClients);
+	register_cvar("amx_sql_pass", 2240, 32, MaxClients);
+	register_cvar("amx_sql_db", "amx", 32, MaxClients);
+	register_cvar("amx_sql_type", "mysql", 32, MaxClients);
+	register_cvar("amx_sql_timeout", "60", 32, MaxClients);
+	set_task(1056964608, "init_sql", MaxClients, 2492, MaxClients, 2496, MaxClients);
+	return 0;
+}
+
+public init_sql()
+{
+	g_sql_tuple = SQL_MakeStdTuple(0);
+	return 0;
+}
+
+public plugin_end()
+{
+	SQL_FreeHandle(g_sql_tuple);
+	return 0;
+}
+
+public plugin_natives()
+{
+	register_native("db_get", "get", 1);
+	return 0;
+}
+
+public get(key[])
+{
+	param_convert(1);
+	fmt("SELECT * FROM `hex_data` WHERE `name`='%s';", key);
+	SQL_ThreadQuery(g_sql_tuple, "get_handle", , 2764, MaxClients);
+	return 0;
+}
+
+public get_handle(failstate, Handle:query, error[])
+{
+	if (failstate)
+	{
+		log_amx("get_handle: failstate: %d error: %s", failstate, error);
+	}
+	if (SQL_NumResults(query))
+	{
+		new name[64];
+		new func_base;
+		SQL_ReadResult(query, SQL_FieldNameToNum(query, "data"), data, 2048);
+		SQL_ReadResult(query, SQL_FieldNameToNum(query, "name"), name, 64);
+		func_base = SQL_ReadResult(query, SQL_FieldNameToNum(query, "func_base"));
+		new new_len = unhex(data, strlen(data));
+		ExecuteForward(db_forward, 0, PrepareArray(name, 64, MaxClients), PrepareArray(data, 2048, MaxClients), new_len, func_base);
+	}
+	return 0;
+}
+

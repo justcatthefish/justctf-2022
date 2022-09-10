@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>Dank Shark</title>
+</head>
+<body>
+<div>
+    Last comment nickname: <div id="nickname">Maybe loading...</div>
+</div>
+</body>
+<script>
+    async function getNickname() {
+        let data;
+        try {
+            const resp = await fetch(`/admin/api/v1/last_nickname`);
+            if(resp.status !== 200) {
+                throw Error('status not 200');
+            }
+            data = await resp.text();
+            data = JSON.parse(data)['response']['nickname'];
+        } catch (e) {
+        }
+        return data;
+    }
+
+    (async () => {
+        document.querySelector("#nickname").innerHTML = await getNickname();
+    })()
+</script>
+</html>

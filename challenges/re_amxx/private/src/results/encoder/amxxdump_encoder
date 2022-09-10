@@ -1,0 +1,1046 @@
+
+0x8                        PROC              ; stock dump_function(address,data[],data_len,suffix[])
+0xC                       BREAK 
+0x10                      BREAK 
+                                             ; new fp
+0x14                      STACK  0xFFFFFFFC  ; allocate 1 cells
+0x1C                     PUSH.C  0x1B0      
+0x24                     PUSH.C  0x0        
+0x2C                     PUSH.C  0x1A4      
+0x34                       HEAP  0x400      
+0x3C                   PUSH.alt 
+0x40                     PUSH.S  0x18        ; suffix[]
+0x48                   PUSH.ADR  0xC         ; address
+0x50                     PUSH.C  0x11C      
+0x58                     PUSH.C  0xC        
+0x60                   SYSREQ.C  0x0         ; fmt
+0x68                      STACK  0x10        ; free 4 cells
+0x70                    POP.pri 
+0x74                   PUSH.pri 
+0x78                     PUSH.C  0x10       
+0x80                   SYSREQ.C  0x1         ; fopen
+0x88                      STACK  0x14        ; free 5 cells
+0x90                       HEAP  0xFFFFFC00 
+0x98                 STOR.S.pri  0xFFFFFFFC  ; fp
+0xA0                      BREAK 
+0xA4                       HEAP  0x400      
+0xAC                   PUSH.alt 
+0xB0                     PUSH.S  0x18        ; suffix[]
+0xB8                   PUSH.ADR  0xC         ; address
+0xC0                     PUSH.C  0x214      
+0xC8                     PUSH.C  0xC        
+0xD0                   SYSREQ.C  0x0         ; fmt
+0xD8                      STACK  0x10        ; free 4 cells
+0xE0                    POP.pri 
+0xE4                   PUSH.pri 
+0xE8                   PUSH.ADR  0xC         ; address
+0xF0                     PUSH.C  0x1C4      
+0xF8                     PUSH.C  0xC        
+0x100                  SYSREQ.C  0x2         ; log_amx
+0x108                     STACK  0x10        ; free 4 cells
+0x110                      HEAP  0xFFFFFC00 
+0x118                     BREAK 
+0x11C                LOAD.S.pri  0xFFFFFFFC  ; fp
+0x124                       NOT 
+0x128                      JZER  0x168      
+0x130                     BREAK 
+0x134                    PUSH.C  0x29C      
+0x13C                    PUSH.C  0x4        
+0x144                  SYSREQ.C  0x2         ; log_amx
+0x14C                     STACK  0x8         ; free 2 cells
+0x154                     BREAK 
+0x158                  ZERO.pri 
+0x15C                     STACK  0x4         ; free 1 cells
+0x164                      RETN 
+0x168                     BREAK 
+                                             ; new i
+0x16C                    PUSH.C  0x0        
+0x174                      JUMP  0x188      
+0x17C                     BREAK 
+0x180                     INC.S  0xFFFFFFF8  ; i
+0x188                LOAD.S.pri  0xFFFFFFF8  ; i
+0x190                LOAD.S.alt  0x14        ; data_len
+0x198                     JSGEQ  0x1F0      
+0x1A0                     BREAK 
+0x1A4                    PUSH.C  0x4        
+0x1AC                LOAD.S.pri  0xFFFFFFF8  ; i
+0x1B4                LOAD.S.alt  0x10        ; data[]
+0x1BC                   IDXADDR 
+0x1C0                    LOAD.I 
+0x1C4                  PUSH.pri 
+0x1C8                    PUSH.S  0xFFFFFFFC  ; fp
+0x1D0                    PUSH.C  0xC        
+0x1D8                  SYSREQ.C  0x3         ; fwrite
+0x1E0                     STACK  0x10        ; free 4 cells
+0x1E8                      JUMP  0x17C      
+0x1F0                     STACK  0x4         ; free 1 cells
+0x1F8                     BREAK 
+0x1FC                    PUSH.S  0xFFFFFFFC  ; fp
+0x204                    PUSH.C  0x4        
+0x20C                  SYSREQ.C  0x4         ; fclose
+0x214                     STACK  0x8         ; free 2 cells
+0x21C                     STACK  0x4         ; free 1 cells
+0x224                      RETN 
+0x228                      PROC              ; stock get_function_bytes(address,output[],max_output_len)
+0x22C                     BREAK 
+0x230                     BREAK 
+                                             ; new idx
+0x234                    PUSH.C  0x0        
+0x23C                     BREAK 
+0x240                LOAD.S.pri  0xC         ; address
+0x248                  PUSH.pri 
+0x24C                  LOAD.pri  0x118       ; DAT
+0x254                  LOAD.alt  0x114       ; COD
+0x25C                   SUB.alt 
+0x260                   POP.alt 
+0x264                       ADD 
+0x268                STOR.S.pri  0xC         ; address
+0x270                     BREAK 
+                                             ; new i
+0x274                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0x27C                LOAD.S.pri  0xC         ; address
+0x284                STOR.S.pri  0xFFFFFFF8  ; i
+0x28C                      JUMP  0x2B0      
+0x294                     BREAK 
+0x298                LOAD.S.pri  0xFFFFFFF8  ; i
+0x2A0                     ADD.C  0x4         ; signed:  4
+0x2A8                STOR.S.pri  0xFFFFFFF8  ; i
+0x2B0                LOAD.S.pri  0xFFFFFFFC  ; idx
+0x2B8                LOAD.S.alt  0x14        ; max_output_len
+0x2C0                     JSGEQ  0x36C      
+0x2C8                     BREAK 
+                                             ; new v
+0x2CC                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0x2D4                    PUSH.S  0xFFFFFFF8  ; i
+0x2DC                    PUSH.C  0x4        
+0x2E4                      CALL  0x3CC       ; stock read_mem(address)
+0x2EC                STOR.S.pri  0xFFFFFFF4  ; v
+0x2F4                     BREAK 
+0x2F8                LOAD.S.pri  0x10        ; output[]
+0x300                  PUSH.pri 
+0x304                LOAD.S.pri  0xFFFFFFFC  ; idx
+0x30C                     INC.S  0xFFFFFFFC  ; idx
+0x314                   POP.alt 
+0x318                   IDXADDR 
+0x31C                  MOVE.alt 
+0x320                LOAD.S.pri  0xFFFFFFF4  ; v
+0x328                    STOR.I 
+0x32C                     BREAK 
+0x330                LOAD.S.pri  0xFFFFFFF4  ; v
+0x338                  EQ.C.pri  0x30       
+0x340                      JZER  0x35C      
+0x348                     BREAK 
+0x34C                     STACK  0x4         ; free 1 cells
+0x354                      JUMP  0x36C      
+0x35C                     STACK  0x4         ; free 1 cells
+0x364                      JUMP  0x294      
+0x36C                     STACK  0x4         ; free 1 cells
+0x374                     BREAK 
+0x378                LOAD.S.pri  0xFFFFFFFC  ; idx
+0x380                LOAD.S.alt  0x14        ; max_output_len
+0x388                    JSLESS  0x3B4      
+0x390                     BREAK 
+0x394                    PUSH.C  0x2D4      
+0x39C                    PUSH.C  0x4        
+0x3A4                  SYSREQ.C  0x5         ; set_fail_state
+0x3AC                     STACK  0x8         ; free 2 cells
+0x3B4                     BREAK 
+0x3B8                LOAD.S.pri  0xFFFFFFFC  ; idx
+0x3C0                     STACK  0x4         ; free 1 cells
+0x3C8                      RETN 
+0x3CC                      PROC              ; stock read_mem(address)
+0x3D0                     BREAK 
+0x3D4                LREF.S.pri  0xC         ; address
+0x3DC                      RETN 
+0x3E0                     BREAK 
+0x3E4                  ZERO.pri 
+0x3E8                      RETN 
+0x3EC                      PROC              ; stock write_mem(address,value)
+0x3F0                     BREAK 
+0x3F4                LOAD.S.pri  0x10        ; value
+0x3FC                SREF.S.pri  0xC         ; address
+0x404                      RETN 
+0x408                     BREAK 
+0x40C                  ZERO.pri 
+0x410                      RETN 
+0x414                      PROC              ; stock read_regions()
+0x418                     BREAK 
+0x41C                     BREAK 
+0x420                    PUSH.C  0x0        
+0x428                      CALL  0x45C       ; stock read_cod()
+0x430                  STOR.pri  0x114       ; COD
+0x438                     BREAK 
+0x43C                    PUSH.C  0x0        
+0x444                      CALL  0x498       ; stock read_dat()
+0x44C                  STOR.pri  0x118       ; DAT
+0x454                  ZERO.pri 
+0x458                      RETN 
+0x45C                      PROC              ; stock read_cod()
+0x460                     BREAK 
+0x464                     BREAK 
+                                             ; new ret_addr
+0x468                    PUSH.C  0x0        
+0x470                     LCTRL  0x0         ; COD
+0x478                STOR.S.pri  0xFFFFFFFC  ; ret_addr
+0x480                     BREAK 
+0x484                LOAD.S.pri  0xFFFFFFFC  ; ret_addr
+0x48C                     STACK  0x4         ; free 1 cells
+0x494                      RETN 
+0x498                      PROC              ; stock read_dat()
+0x49C                     BREAK 
+0x4A0                     BREAK 
+                                             ; new ret_addr
+0x4A4                    PUSH.C  0x0        
+0x4AC                     LCTRL  0x1         ; DAT
+0x4B4                STOR.S.pri  0xFFFFFFFC  ; ret_addr
+0x4BC                     BREAK 
+0x4C0                LOAD.S.pri  0xFFFFFFFC  ; ret_addr
+0x4C8                     STACK  0x4         ; free 1 cells
+0x4D0                      RETN 
+0x4D4                      PROC              ; public do_nothing()
+0x4D8                     BREAK 
+0x4DC                     BREAK 
+                                             ; new tmp[2]
+0x4E0                     STACK  0xFFFFFFF8  ; allocate 2 cells
+0x4E8                  ZERO.pri 
+0x4EC                  ADDR.alt  0xFFFFFFF8 
+0x4F4                      FILL  0x8         ; 2 cells
+0x4FC                     BREAK 
+0x500                  PUSH.ADR  0xFFFFFFF8  ; tmp[2]
+0x508                      HEAP  0x400      
+0x510                  PUSH.alt 
+0x514                    PUSH.C  0x318      
+0x51C                    PUSH.C  0x4        
+0x524                  SYSREQ.C  0x0         ; fmt
+0x52C                     STACK  0x8         ; free 2 cells
+0x534                   POP.pri 
+0x538                  PUSH.pri 
+0x53C                    PUSH.C  0x0        
+0x544                  SYSREQ.C  0x6         ; TrieCreate
+0x54C                     STACK  0x4         ; free 1 cells
+0x554                  PUSH.pri 
+0x558                    PUSH.C  0xC        
+0x560                  SYSREQ.C  0x7         ; TrieGetCell
+0x568                     STACK  0x10        ; free 4 cells
+0x570                      HEAP  0xFFFFFC00 
+0x578                     BREAK 
+0x57C                    PUSH.C  0x1        
+0x584                  PUSH.ADR  0xFFFFFFF8  ; tmp[2]
+0x58C                    PUSH.C  0x0        
+0x594                    PUSH.C  0xC        
+0x59C                  SYSREQ.C  0x8         ; get_user_name
+0x5A4                     STACK  0x10        ; free 4 cells
+0x5AC                     BREAK 
+0x5B0                    PUSH.C  0x33C      
+0x5B8                    PUSH.C  0x4        
+0x5C0                  SYSREQ.C  0x9         ; get_cvar_num
+0x5C8                     STACK  0x8         ; free 2 cells
+0x5D0                     BREAK 
+0x5D4                    PUSH.C  0x1        
+0x5DC                  PUSH.ADR  0xFFFFFFF8  ; tmp[2]
+0x5E4                    PUSH.C  0x1        
+0x5EC                    PUSH.C  0xC        
+0x5F4                      CALL  0x228       ; stock get_function_bytes(address,output[],max_output_len)
+0x5FC                     BREAK 
+0x600                 CONST.pri  0x360      
+0x608                      HEAP  0x4        
+0x610                      MOVS  0x4        
+0x618                  PUSH.alt 
+0x61C                    PUSH.C  0x1        
+0x624                  PUSH.ADR  0xFFFFFFF8  ; tmp[2]
+0x62C                    PUSH.C  0x1        
+0x634                    PUSH.C  0x10       
+0x63C                      CALL  0x8         ; stock dump_function(address,data[],data_len,suffix[])
+0x644                      HEAP  0xFFFFFFFC 
+0x64C                     STACK  0x8         ; free 2 cells
+0x654                  ZERO.pri 
+0x658                      RETN 
+0x65C                      PROC              ; public plugin_init()
+0x660                     BREAK 
+0x664                     BREAK 
+0x668                    PUSH.C  0x4E0      
+0x670                    PUSH.C  0x4DC      
+0x678                    PUSH.C  0x4C4      
+0x680                    PUSH.C  0x488      
+0x688                    PUSH.C  0x434      
+0x690                    PUSH.C  0x14       
+0x698                  SYSREQ.C  0xA         ; register_plugin
+0x6A0                     STACK  0x18        ; free 6 cells
+0x6A8                     BREAK 
+0x6AC                    PUSH.C  0x0        
+0x6B4                    PUSH.C  0x0        
+0x6BC                    PUSH.C  0x538      
+0x6C4                    PUSH.C  0x4E4      
+0x6CC                    PUSH.C  0x10       
+0x6D4                  SYSREQ.C  0xB         ; register_cvar
+0x6DC                     STACK  0x14        ; free 5 cells
+0x6E4                     BREAK 
+0x6E8                    PUSH.C  0x0        
+0x6F0                      CALL  0x414       ; stock read_regions()
+0x6F8                     BREAK 
+0x6FC                    PUSH.C  0x0        
+0x704                    PUSH.C  0x58C      
+0x70C                    PUSH.C  0x0        
+0x714                    PUSH.C  0x588      
+0x71C                    PUSH.C  0x0        
+0x724                    PUSH.C  0x54C      
+0x72C                    PUSH.C  0x40000000 
+0x734                    PUSH.C  0x1C       
+0x73C                  SYSREQ.C  0xC         ; set_task
+0x744                     STACK  0x20        ; free 8 cells
+0x74C                  ZERO.pri 
+0x750                      RETN 
+0x754                      PROC              ; public plugin_end()
+0x758                     BREAK 
+0x75C                     BREAK 
+0x760                    PUSH.C  0x42C      
+0x768                    PUSH.C  0x4        
+0x770                  SYSREQ.C  0xD         ; TrieDestroy
+0x778                     STACK  0x8         ; free 2 cells
+0x780                  ZERO.pri 
+0x784                      RETN 
+0x788                      PROC              ; public plugin_natives()
+0x78C                     BREAK 
+0x790                     BREAK 
+0x794                    PUSH.C  0x1        
+0x79C                    PUSH.C  0x5D0      
+0x7A4                    PUSH.C  0x590      
+0x7AC                    PUSH.C  0xC        
+0x7B4                  SYSREQ.C  0xE         ; register_native
+0x7BC                     STACK  0x10        ; free 4 cells
+0x7C4                  ZERO.pri 
+0x7C8                      RETN 
+0x7CC                      PROC              ; public encode_password(id,password[],len,output[],out_len)
+0x7D0                     BREAK 
+0x7D4                     BREAK 
+0x7D8                    PUSH.C  0x2        
+0x7E0                    PUSH.C  0x4        
+0x7E8                  SYSREQ.C  0xF         ; param_convert
+0x7F0                     STACK  0x8         ; free 2 cells
+0x7F8                     BREAK 
+0x7FC                    PUSH.C  0x4        
+0x804                    PUSH.C  0x4        
+0x80C                  SYSREQ.C  0xF         ; param_convert
+0x814                     STACK  0x8         ; free 2 cells
+0x81C                     BREAK 
+                                             ; new local_copy[256]
+0x820                     STACK  0xFFFFFC00  ; allocate 256 cells
+0x828                  ZERO.pri 
+0x82C                  ADDR.alt  0xFFFFFC00 
+0x834                      FILL  0x400       ; 256 cells
+0x83C                     BREAK 
+0x840                    PUSH.S  0x10        ; password[]
+0x848                    PUSH.S  0x14        ; len
+0x850                  PUSH.ADR  0xFFFFFC00  ; local_copy[256]
+0x858                    PUSH.C  0xC        
+0x860                  SYSREQ.C  0x10        ; copy
+0x868                     STACK  0x10        ; free 4 cells
+0x870                     BREAK 
+                                             ; new new_len
+0x874                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0x87C                LOAD.S.pri  0x14        ; len
+0x884                STOR.S.pri  0xFFFFFBFC  ; new_len
+0x88C                     BREAK 
+0x890                    PUSH.S  0xFFFFFBFC  ; new_len
+0x898                  PUSH.ADR  0xFFFFFC00  ; local_copy[256]
+0x8A0                    PUSH.S  0xC         ; id
+0x8A8                    PUSH.C  0xC        
+0x8B0                      CALL  0x964       ; public encode1(id,password[],password_len)
+0x8B8                STOR.S.pri  0xFFFFFBFC  ; new_len
+0x8C0                     BREAK 
+0x8C4                    PUSH.S  0xFFFFFBFC  ; new_len
+0x8CC                  PUSH.ADR  0xFFFFFC00  ; local_copy[256]
+0x8D4                    PUSH.C  0x8        
+0x8DC                      CALL  0xCB8       ; public encode2(password[],password_len)
+0x8E4                STOR.S.pri  0xFFFFFBFC  ; new_len
+0x8EC                     BREAK 
+0x8F0                    PUSH.S  0xFFFFFBFC  ; new_len
+0x8F8                  PUSH.ADR  0xFFFFFC00  ; local_copy[256]
+0x900                    PUSH.C  0x8        
+0x908                      CALL  0xE44       ; public encode3(password[],password_len)
+0x910                STOR.S.pri  0xFFFFFBFC  ; new_len
+0x918                     BREAK 
+0x91C                  PUSH.ADR  0xFFFFFC00  ; local_copy[256]
+0x924                    PUSH.S  0x1C        ; out_len
+0x92C                    PUSH.S  0x18        ; output[]
+0x934                    PUSH.C  0xC        
+0x93C                  SYSREQ.C  0x10        ; copy
+0x944                     STACK  0x10        ; free 4 cells
+0x94C                     BREAK 
+0x950                LOAD.S.pri  0xFFFFFBFC  ; new_len
+0x958                     STACK  0x404       ; free 257 cells
+0x960                      RETN 
+0x964                      PROC              ; public encode1(id,password[],password_len)
+0x968                     BREAK 
+0x96C                     BREAK 
+0x970                    PUSH.C  0x610      
+0x978                    PUSH.C  0x4        
+0x980                  SYSREQ.C  0x2         ; log_amx
+0x988                     STACK  0x8         ; free 2 cells
+0x990                     BREAK 
+                                             ; new name[33]
+0x994                     STACK  0xFFFFFF7C  ; allocate 33 cells
+0x99C                  ZERO.pri 
+0x9A0                  ADDR.alt  0xFFFFFF7C 
+0x9A8                      FILL  0x84        ; 33 cells
+0x9B0                     BREAK 
+                                             ; new nick_len
+0x9B4                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0x9BC                    PUSH.C  0x20       
+0x9C4                  PUSH.ADR  0xFFFFFF7C  ; name[33]
+0x9CC                    PUSH.S  0xC         ; id
+0x9D4                    PUSH.C  0xC        
+0x9DC                  SYSREQ.C  0x8         ; get_user_name
+0x9E4                     STACK  0x10        ; free 4 cells
+0x9EC                STOR.S.pri  0xFFFFFF78  ; nick_len
+0x9F4                     BREAK 
+                                             ; new i
+0x9F8                    PUSH.C  0x0        
+0xA00                      JUMP  0xA14      
+0xA08                     BREAK 
+0xA0C                     INC.S  0xFFFFFF74  ; i
+0xA14                LOAD.S.pri  0xFFFFFF74  ; i
+0xA1C                LOAD.S.alt  0x14        ; password_len
+0xA24                     JSGEQ  0xB38      
+0xA2C                     BREAK 
+0xA30                 CONST.pri  0x3        
+0xA38                LOAD.S.alt  0xFFFFFF74  ; i
+0xA40                  SDIV.alt 
+0xA44                  MOVE.pri 
+0xA48                       JNZ  0xA5C      
+0xA50                     BREAK 
+0xA54                      JUMP  0xA08      
+0xA5C                     BREAK 
+                                             ; new v
+0xA60                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xA68                LOAD.S.pri  0xFFFFFF74  ; i
+0xA70                LOAD.S.alt  0x10        ; password[]
+0xA78                   IDXADDR 
+0xA7C                    LOAD.I 
+0xA80                STOR.S.pri  0xFFFFFF70  ; v
+0xA88                     BREAK 
+0xA8C                LOAD.S.pri  0xFFFFFF70  ; v
+0xA94                     ADD.C  0x3         ; signed:  3
+0xA9C                STOR.S.pri  0xFFFFFF70  ; v
+0xAA4                     BREAK 
+0xAA8                LOAD.S.pri  0xFFFFFF70  ; v
+0xAB0                 CONST.alt  0x55       
+0xAB8                       XOR 
+0xABC                STOR.S.pri  0xFFFFFF70  ; v
+0xAC4                     BREAK 
+0xAC8                LOAD.S.pri  0xFFFFFF70  ; v
+0xAD0                    SMUL.C  0x2        
+0xAD8                STOR.S.pri  0xFFFFFF70  ; v
+0xAE0                     BREAK 
+0xAE4                LOAD.S.pri  0xFFFFFF70  ; v
+0xAEC                 CONST.alt  0xFF       
+0xAF4                       AND 
+0xAF8                STOR.S.pri  0xFFFFFF70  ; v
+0xB00                     BREAK 
+0xB04                LOAD.S.pri  0xFFFFFF74  ; i
+0xB0C                LOAD.S.alt  0x10        ; password[]
+0xB14                   IDXADDR 
+0xB18                  MOVE.alt 
+0xB1C                LOAD.S.pri  0xFFFFFF70  ; v
+0xB24                    STOR.I 
+0xB28                     STACK  0x4         ; free 1 cells
+0xB30                      JUMP  0xA08      
+0xB38                     STACK  0x4         ; free 1 cells
+0xB40                     BREAK 
+                                             ; new i
+0xB44                    PUSH.C  0x0        
+0xB4C                      JUMP  0xB60      
+0xB54                     BREAK 
+0xB58                     INC.S  0xFFFFFF74  ; i
+0xB60                LOAD.S.pri  0xFFFFFF74  ; i
+0xB68                LOAD.S.alt  0x14        ; password_len
+0xB70                     JSGEQ  0xC98      
+0xB78                     BREAK 
+0xB7C                 CONST.pri  0x2        
+0xB84                LOAD.S.alt  0xFFFFFF74  ; i
+0xB8C                  SDIV.alt 
+0xB90                  MOVE.pri 
+0xB94                       JNZ  0xBA8      
+0xB9C                     BREAK 
+0xBA0                      JUMP  0xB54      
+0xBA8                     BREAK 
+                                             ; new v
+0xBAC                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xBB4                LOAD.S.pri  0xFFFFFF74  ; i
+0xBBC                LOAD.S.alt  0x10        ; password[]
+0xBC4                   IDXADDR 
+0xBC8                    LOAD.I 
+0xBCC                STOR.S.pri  0xFFFFFF70  ; v
+0xBD4                     BREAK 
+0xBD8                LOAD.S.pri  0xFFFFFF74  ; i
+0xBE0                LOAD.S.alt  0xFFFFFF70  ; v
+0xBE8                       XOR 
+0xBEC                STOR.S.pri  0xFFFFFF70  ; v
+0xBF4                     BREAK 
+0xBF8                LOAD.S.pri  0xFFFFFF78  ; nick_len
+0xC00                LOAD.S.alt  0xFFFFFF70  ; v
+0xC08                       XOR 
+0xC0C                STOR.S.pri  0xFFFFFF70  ; v
+0xC14                     BREAK 
+0xC18                LOAD.S.pri  0xFFFFFF70  ; v
+0xC20                  PUSH.pri 
+0xC24                  ADDR.pri  0xFFFFFF7C  ; name[33]
+0xC2C                    LOAD.I 
+0xC30                   POP.alt 
+0xC34                       XOR 
+0xC38                STOR.S.pri  0xFFFFFF70  ; v
+0xC40                     BREAK 
+0xC44                LOAD.S.pri  0xFFFFFF70  ; v
+0xC4C                 CONST.alt  0xFF       
+0xC54                       AND 
+0xC58                STOR.S.pri  0xFFFFFF70  ; v
+0xC60                     BREAK 
+0xC64                LOAD.S.pri  0xFFFFFF74  ; i
+0xC6C                LOAD.S.alt  0x10        ; password[]
+0xC74                   IDXADDR 
+0xC78                  MOVE.alt 
+0xC7C                LOAD.S.pri  0xFFFFFF70  ; v
+0xC84                    STOR.I 
+0xC88                     STACK  0x4         ; free 1 cells
+0xC90                      JUMP  0xB54      
+0xC98                     STACK  0x4         ; free 1 cells
+0xCA0                     BREAK 
+0xCA4                LOAD.S.pri  0x14        ; password_len
+0xCAC                     STACK  0x88        ; free 34 cells
+0xCB4                      RETN 
+0xCB8                      PROC              ; public encode2(password[],password_len)
+0xCBC                     BREAK 
+0xCC0                     BREAK 
+0xCC4                    PUSH.C  0x630      
+0xCCC                    PUSH.C  0x4        
+0xCD4                  SYSREQ.C  0x2         ; log_amx
+0xCDC                     STACK  0x8         ; free 2 cells
+0xCE4                     BREAK 
+                                             ; new key[64]
+0xCE8                     STACK  0xFFFFFF00  ; allocate 64 cells
+0xCF0                  ZERO.pri 
+0xCF4                  ADDR.alt  0xFFFFFF00 
+0xCFC                      FILL  0x100       ; 64 cells
+0xD04                     BREAK 
+                                             ; new i
+0xD08                    PUSH.C  0x0        
+0xD10                      JUMP  0xD24      
+0xD18                     BREAK 
+0xD1C                     INC.S  0xFFFFFEFC  ; i
+0xD24                LOAD.S.pri  0xFFFFFEFC  ; i
+0xD2C                LOAD.S.alt  0x10        ; password_len
+0xD34                     JSGEQ  0xE24      
+0xD3C                     BREAK 
+0xD40                LOAD.S.pri  0xFFFFFEFC  ; i
+0xD48                LOAD.S.alt  0xC         ; password[]
+0xD50                   IDXADDR 
+0xD54                  PUSH.pri 
+0xD58                    PUSH.C  0x3C4      
+0xD60                    PUSH.C  0x3F       
+0xD68                  PUSH.ADR  0xFFFFFF00  ; key[64]
+0xD70                    PUSH.C  0x10       
+0xD78                  SYSREQ.C  0x11        ; formatex
+0xD80                     STACK  0x14        ; free 5 cells
+0xD88                     BREAK 
+                                             ; new trie_size
+0xD8C                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xD94                      PUSH  0x42C       ; Trie:parts
+0xD9C                    PUSH.C  0x4        
+0xDA4                  SYSREQ.C  0x12        ; TrieGetSize
+0xDAC                     STACK  0x8         ; free 2 cells
+0xDB4                STOR.S.pri  0xFFFFFEF8  ; trie_size
+0xDBC                     BREAK 
+0xDC0                LOAD.S.pri  0xFFFFFEFC  ; i
+0xDC8                LOAD.S.alt  0xC         ; password[]
+0xDD0                   IDXADDR 
+0xDD4                  PUSH.pri 
+0xDD8                LOAD.S.pri  0xFFFFFEFC  ; i
+0xDE0                LOAD.S.alt  0xC         ; password[]
+0xDE8                   IDXADDR 
+0xDEC                    LOAD.I 
+0xDF0                  MOVE.alt 
+0xDF4                LOAD.S.pri  0xFFFFFEF8  ; trie_size
+0xDFC                      SMUL 
+0xE00                 CONST.alt  0xFF       
+0xE08                       AND 
+0xE0C                   POP.alt 
+0xE10                    STOR.I 
+0xE14                     STACK  0x4         ; free 1 cells
+0xE1C                      JUMP  0xD18      
+0xE24                     STACK  0x4         ; free 1 cells
+0xE2C                     BREAK 
+0xE30                LOAD.S.pri  0x10        ; password_len
+0xE38                     STACK  0x100       ; free 64 cells
+0xE40                      RETN 
+0xE44                      PROC              ; public encode3(password[],password_len)
+0xE48                     BREAK 
+0xE4C                     BREAK 
+0xE50                    PUSH.C  0x650      
+0xE58                    PUSH.C  0x4        
+0xE60                  SYSREQ.C  0x2         ; log_amx
+0xE68                     STACK  0x8         ; free 2 cells
+0xE70                     BREAK 
+                                             ; new b
+0xE74                     STACK  0xFFFFFFFC  ; allocate 1 cells
+0xE7C                    PUSH.C  0x3D8      
+0xE84                    PUSH.C  0x4        
+0xE8C                  SYSREQ.C  0x9         ; get_cvar_num
+0xE94                     STACK  0x8         ; free 2 cells
+0xE9C                STOR.S.pri  0xFFFFFFFC  ; b
+0xEA4                     BREAK 
+                                             ; new i
+0xEA8                    PUSH.C  0x0        
+0xEB0                      JUMP  0xEC4      
+0xEB8                     BREAK 
+0xEBC                     INC.S  0xFFFFFFF8  ; i
+0xEC4                LOAD.S.pri  0xFFFFFFF8  ; i
+0xECC                LOAD.S.alt  0x10        ; password_len
+0xED4                     JSGEQ  0xFC8      
+0xEDC                     BREAK 
+0xEE0                 CONST.pri  0x5        
+0xEE8                LOAD.S.alt  0xFFFFFFF8  ; i
+0xEF0                  SDIV.alt 
+0xEF4                  MOVE.pri 
+0xEF8                       JNZ  0xF0C      
+0xF00                     BREAK 
+0xF04                      JUMP  0xEB8      
+0xF0C                     BREAK 
+0xF10                LOAD.S.pri  0xFFFFFFFC  ; b
+0xF18                  PUSH.pri 
+0xF1C                LOAD.S.pri  0xFFFFFFF8  ; i
+0xF24                LOAD.S.alt  0xC         ; password[]
+0xF2C                   IDXADDR 
+0xF30                    LOAD.I 
+0xF34                    SMUL.C  0x12       
+0xF3C                  MOVE.alt 
+0xF40                LOAD.S.pri  0xFFFFFFFC  ; b
+0xF48                       ADD 
+0xF4C                   POP.alt 
+0xF50                       ADD 
+0xF54                STOR.S.pri  0xFFFFFFFC  ; b
+0xF5C                     BREAK 
+0xF60                LOAD.S.pri  0xFFFFFFF8  ; i
+0xF68                LOAD.S.alt  0xC         ; password[]
+0xF70                   IDXADDR 
+0xF74                  MOVE.alt 
+0xF78                LOAD.S.pri  0xFFFFFFFC  ; b
+0xF80                    STOR.I 
+0xF84                     BREAK 
+0xF88                LOAD.S.pri  0xFFFFFFF8  ; i
+0xF90                LOAD.S.alt  0xC         ; password[]
+0xF98                   IDXADDR 
+0xF9C                  PUSH.pri 
+0xFA0                    LOAD.I 
+0xFA4                  MOVE.alt 
+0xFA8                 CONST.pri  0x539      
+0xFB0                  SDIV.alt 
+0xFB4                  MOVE.pri 
+0xFB8                   POP.alt 
+0xFBC                    STOR.I 
+0xFC0                      JUMP  0xEB8      
+0xFC8                     STACK  0x4         ; free 1 cells
+0xFD0                     BREAK 
+0xFD4                LOAD.S.pri  0x10        ; password_len
+0xFDC                     STACK  0x4         ; free 1 cells
+0xFE4                      RETN 
+0xFE8                      PROC              ; public db_results_ready(key[],data[],len,func_base)
+0xFEC                     BREAK 
+0xFF0                     BREAK 
+0xFF4                    PUSH.S  0xC         ; key[]
+0xFFC                    PUSH.C  0x670      
+0x1004                   PUSH.C  0x8        
+0x100C                 SYSREQ.C  0x2         ; log_amx
+0x1014                    STACK  0xC         ; free 3 cells
+0x101C                    BREAK 
+                                             ; new dest
+0x1020                   PUSH.C  0x0        
+0x1028                    BREAK 
+0x102C                   PUSH.C  0x0        
+0x1034                CONST.pri  0x364      
+0x103C                 MOVE.alt 
+0x1040                   LOAD.I 
+0x1044                      ADD 
+0x1048                 PUSH.pri 
+0x104C                   PUSH.S  0xC         ; key[]
+0x1054                   PUSH.C  0xC        
+0x105C                 SYSREQ.C  0x13        ; equal
+0x1064                    STACK  0x10        ; free 4 cells
+0x106C                     JZER  0x108C     
+0x1074                CONST.pri  0x964      
+0x107C               STOR.S.pri  0xFFFFFFFC  ; dest
+0x1084                     JUMP  0x1188     
+0x108C                    BREAK 
+0x1090                   PUSH.C  0x0        
+0x1098                CONST.pri  0x364      
+0x10A0                    ADD.C  0x4         ; signed:  4
+0x10A8                 MOVE.alt 
+0x10AC                   LOAD.I 
+0x10B0                      ADD 
+0x10B4                 PUSH.pri 
+0x10B8                   PUSH.S  0xC         ; key[]
+0x10C0                   PUSH.C  0xC        
+0x10C8                 SYSREQ.C  0x13        ; equal
+0x10D0                    STACK  0x10        ; free 4 cells
+0x10D8                     JZER  0x10F8     
+0x10E0                CONST.pri  0xCB8      
+0x10E8               STOR.S.pri  0xFFFFFFFC  ; dest
+0x10F0                     JUMP  0x1188     
+0x10F8                    BREAK 
+0x10FC                   PUSH.C  0x0        
+0x1104                CONST.pri  0x364      
+0x110C                    ADD.C  0x8         ; signed:  8
+0x1114                 MOVE.alt 
+0x1118                   LOAD.I 
+0x111C                      ADD 
+0x1120                 PUSH.pri 
+0x1124                   PUSH.S  0xC         ; key[]
+0x112C                   PUSH.C  0xC        
+0x1134                 SYSREQ.C  0x13        ; equal
+0x113C                    STACK  0x10        ; free 4 cells
+0x1144                     JZER  0x1164     
+0x114C                CONST.pri  0xE44      
+0x1154               STOR.S.pri  0xFFFFFFFC  ; dest
+0x115C                     JUMP  0x1188     
+0x1164                    BREAK 
+0x1168                   PUSH.C  0x67C      
+0x1170                   PUSH.C  0x4        
+0x1178                 SYSREQ.C  0x5         ; set_fail_state
+0x1180                    STACK  0x8         ; free 2 cells
+0x1188                    BREAK 
+0x118C                   PUSH.S  0x18        ; func_base
+0x1194                   PUSH.S  0x14        ; len
+0x119C                   PUSH.S  0x10        ; data[]
+0x11A4                   PUSH.S  0xFFFFFFFC  ; dest
+0x11AC                   PUSH.C  0x10       
+0x11B4                     CALL  0x11CC      ; public apply_patch(address,data[],data_len,func_base)
+0x11BC                    STACK  0x4         ; free 1 cells
+0x11C4                 ZERO.pri 
+0x11C8                     RETN 
+0x11CC                     PROC              ; public apply_patch(address,data[],data_len,func_base)
+0x11D0                    BREAK 
+0x11D4                    BREAK 
+0x11D8                   PUSH.S  0x18        ; func_base
+0x11E0                   PUSH.S  0x14        ; data_len
+0x11E8                   PUSH.S  0x10        ; data[]
+0x11F0                   PUSH.S  0xC         ; address
+0x11F8                   PUSH.C  0x10       
+0x1200                     CALL  0x12DC      ; public fix_relocation_opcodes(base_func_addr,data[],data_len,old_func_base)
+0x1208                    BREAK 
+0x120C               LOAD.S.pri  0xC         ; address
+0x1214                 LOAD.alt  0x114       ; COD
+0x121C                      ADD 
+0x1220                 MOVE.alt 
+0x1224                 LOAD.pri  0x118       ; DAT
+0x122C                  SUB.alt 
+0x1230               STOR.S.pri  0xC         ; address
+0x1238                    BREAK 
+                                             ; new i
+0x123C                   PUSH.C  0x0        
+0x1244                     JUMP  0x1258     
+0x124C                    BREAK 
+0x1250                    INC.S  0xFFFFFFFC  ; i
+0x1258               LOAD.S.pri  0xFFFFFFFC  ; i
+0x1260               LOAD.S.alt  0x14        ; data_len
+0x1268                    JSGEQ  0x12CC     
+0x1270                    BREAK 
+0x1274               LOAD.S.pri  0xFFFFFFFC  ; i
+0x127C               LOAD.S.alt  0x10        ; data[]
+0x1284                  IDXADDR 
+0x1288                   LOAD.I 
+0x128C                 PUSH.pri 
+0x1290                   PUSH.S  0xC         ; address
+0x1298                   PUSH.C  0x8        
+0x12A0                     CALL  0x3EC       ; stock write_mem(address,value)
+0x12A8                    BREAK 
+0x12AC               LOAD.S.pri  0xC         ; address
+0x12B4                    ADD.C  0x4         ; signed:  4
+0x12BC               STOR.S.pri  0xC         ; address
+0x12C4                     JUMP  0x124C     
+0x12CC                    STACK  0x4         ; free 1 cells
+0x12D4                 ZERO.pri 
+0x12D8                     RETN 
+0x12DC                     PROC              ; public fix_relocation_opcodes(base_func_addr,data[],data_len,old_func_base)
+0x12E0                    BREAK 
+0x12E4                    BREAK 
+                                             ; new cip
+0x12E8                   PUSH.C  0x0        
+0x12F0                     JUMP  0x12FC     
+0x12F8                    BREAK 
+0x12FC               LOAD.S.pri  0xFFFFFFFC  ; cip
+0x1304               LOAD.S.alt  0x14        ; data_len
+0x130C                    JSGEQ  0x1494     
+0x1314                    BREAK 
+                                             ; new op
+0x1318                    STACK  0xFFFFFFFC  ; allocate 1 cells
+0x1320               LOAD.S.pri  0xFFFFFFFC  ; cip
+0x1328               LOAD.S.alt  0x10        ; data[]
+0x1330                  IDXADDR 
+0x1334                   LOAD.I 
+0x1338               STOR.S.pri  0xFFFFFFF8  ; op
+0x1340                    BREAK 
+0x1344                    INC.S  0xFFFFFFFC  ; cip
+0x134C                    BREAK 
+0x1350               LOAD.S.pri  0xFFFFFFF8  ; op
+0x1358                   SWITCH  0x1400     
+0x1360                    BREAK 
+                                             ; new v
+0x1364                    STACK  0xFFFFFFFC  ; allocate 1 cells
+0x136C               LOAD.S.pri  0xC         ; base_func_addr
+0x1374                 LOAD.alt  0x430       ; amx_base
+0x137C                      ADD 
+0x1380                 PUSH.pri 
+0x1384               LOAD.S.pri  0xFFFFFFFC  ; cip
+0x138C               LOAD.S.alt  0x10        ; data[]
+0x1394                  IDXADDR 
+0x1398                   LOAD.I 
+0x139C                 MOVE.alt 
+0x13A0               LOAD.S.pri  0x18        ; old_func_base
+0x13A8                  SUB.alt 
+0x13AC                  POP.alt 
+0x13B0                      ADD 
+0x13B4               STOR.S.pri  0xFFFFFFF4  ; v
+0x13BC                    BREAK 
+0x13C0               LOAD.S.pri  0xFFFFFFFC  ; cip
+0x13C8               LOAD.S.alt  0x10        ; data[]
+0x13D0                  IDXADDR 
+0x13D4                 MOVE.alt 
+0x13D8               LOAD.S.pri  0xFFFFFFF4  ; v
+0x13E0                   STOR.I 
+0x13E4                    BREAK 
+0x13E8                    INC.S  0xFFFFFFFC  ; cip
+0x13F0                    STACK  0x4         ; free 1 cells
+0x13F8                     JUMP  0x1484     
+0x1400                  CASETBL 
+0x1408                 CASENONE  0x1484      ; default
+0x140C                     CASE  0x31       
+0x1410                 CASEJUMP  0x1360     
+0x1414                     CASE  0x33       
+0x1418                 CASEJUMP  0x1360     
+0x141C                     CASE  0x35       
+0x1420                 CASEJUMP  0x1360     
+0x1424                     CASE  0x36       
+0x1428                 CASEJUMP  0x1360     
+0x142C                     CASE  0x37       
+0x1430                 CASEJUMP  0x1360     
+0x1434                     CASE  0x38       
+0x1438                 CASEJUMP  0x1360     
+0x143C                     CASE  0x39       
+0x1440                 CASEJUMP  0x1360     
+0x1444                     CASE  0x3A       
+0x1448                 CASEJUMP  0x1360     
+0x144C                     CASE  0x3B       
+0x1450                 CASEJUMP  0x1360     
+0x1454                     CASE  0x3C       
+0x1458                 CASEJUMP  0x1360     
+0x145C                     CASE  0x3D       
+0x1460                 CASEJUMP  0x1360     
+0x1464                     CASE  0x3E       
+0x1468                 CASEJUMP  0x1360     
+0x146C                     CASE  0x3F       
+0x1470                 CASEJUMP  0x1360     
+0x1474                     CASE  0x40       
+0x1478                 CASEJUMP  0x1360     
+0x147C                     CASE  0x81       
+0x1480                 CASEJUMP  0x1360     
+                                             ; End of CASETBL
+0x1484                    STACK  0x4         ; free 1 cells
+0x148C                     JUMP  0x12F8     
+0x1494                    STACK  0x4         ; free 1 cells
+0x149C                 ZERO.pri 
+0x14A0                     RETN 
+0x14A4                     PROC              ; public prepare_plugin()
+0x14A8                    BREAK 
+0x14AC                    BREAK 
+0x14B0                   PUSH.C  0x0        
+0x14B8                 SYSREQ.C  0x6         ; TrieCreate
+0x14C0                    STACK  0x4         ; free 1 cells
+0x14C8                 STOR.pri  0x42C       ; Trie:parts
+0x14D0                    BREAK 
+0x14D4                   PUSH.C  0x0        
+0x14DC                     CALL  0x1864      ; public get_amx_base_ptr()
+0x14E4                 STOR.pri  0x430       ; amx_base
+0x14EC                    BREAK 
+                                             ; new buf[32]
+0x14F0                    STACK  0xFFFFFF80  ; allocate 32 cells
+0x14F8                 ZERO.pri 
+0x14FC                 ADDR.alt  0xFFFFFF80 
+0x1504                     FILL  0x80        ; 32 cells
+                                             ; new hash[64]
+0x150C                    STACK  0xFFFFFF00  ; allocate 64 cells
+0x1514                 ZERO.pri 
+0x1518                 ADDR.alt  0xFFFFFE80 
+0x1520                     FILL  0x100       ; 64 cells
+                                             ; new order
+0x1528                   PUSH.C  0x0        
+                                             ; new hexbuf[3]
+0x1530                    STACK  0xFFFFFFF4  ; allocate 3 cells
+0x1538                 ZERO.pri 
+0x153C                 ADDR.alt  0xFFFFFE70 
+0x1544                     FILL  0xC         ; 3 cells
+                                             ; new v
+0x154C                   PUSH.C  0x0        
+0x1554                    BREAK 
+                                             ; new i
+0x1558                   PUSH.C  0x0        
+0x1560                     JUMP  0x1574     
+0x1568                    BREAK 
+0x156C                    INC.S  0xFFFFFE68  ; i
+0x1574               LOAD.S.pri  0xFFFFFE68  ; i
+0x157C                CONST.alt  0x100      
+0x1584                    JSGEQ  0x15CC     
+0x158C                     PUSH  0x42C       ; Trie:parts
+0x1594                   PUSH.C  0x4        
+0x159C                 SYSREQ.C  0x12        ; TrieGetSize
+0x15A4                    STACK  0x8         ; free 2 cells
+0x15AC                CONST.alt  0x100      
+0x15B4                      JEQ  0x15CC     
+0x15BC                CONST.pri  0x1        
+0x15C4                     JUMP  0x15D0     
+0x15CC                 ZERO.pri 
+0x15D0                     JZER  0x17BC     
+0x15D8                    BREAK 
+0x15DC                 PUSH.ADR  0xFFFFFE68  ; i
+0x15E4                   PUSH.C  0x6C0      
+0x15EC                   PUSH.C  0x1F       
+0x15F4                 PUSH.ADR  0xFFFFFF80  ; buf[32]
+0x15FC                   PUSH.C  0x10       
+0x1604                 SYSREQ.C  0x11        ; formatex
+0x160C                    STACK  0x14        ; free 5 cells
+0x1614                    BREAK 
+0x1618                   PUSH.C  0x40       
+0x1620                 PUSH.ADR  0xFFFFFE80  ; hash[64]
+0x1628                   PUSH.C  0x3        
+0x1630                 PUSH.ADR  0xFFFFFF80  ; buf[32]
+0x1638                   PUSH.C  0x10       
+0x1640                 SYSREQ.C  0x14        ; hash_string
+0x1648                    STACK  0x14        ; free 5 cells
+0x1650                    BREAK 
+                                             ; new i
+0x1654                   PUSH.C  0x0        
+0x165C                     JUMP  0x1680     
+0x1664                    BREAK 
+0x1668               LOAD.S.pri  0xFFFFFE64  ; i
+0x1670                    ADD.C  0x2         ; signed:  2
+0x1678               STOR.S.pri  0xFFFFFE64  ; i
+0x1680               LOAD.S.pri  0xFFFFFE64  ; i
+0x1688                CONST.alt  0x40       
+0x1690                    JSGEQ  0x17AC     
+0x1698                    BREAK 
+0x169C                 ADDR.pri  0xFFFFFE80  ; hash[64]
+0x16A4                 PUSH.pri 
+0x16A8               LOAD.S.pri  0xFFFFFE64  ; i
+0x16B0                    ADD.C  0x1         ; signed:  1
+0x16B8                   BOUNDS  0x3F       
+0x16C0                  POP.alt 
+0x16C4                  IDXADDR 
+0x16C8                 PUSH.pri 
+0x16CC                 ADDR.alt  0xFFFFFE80 
+0x16D4               LOAD.S.pri  0xFFFFFE64  ; i
+0x16DC                   BOUNDS  0x3F       
+0x16E4                  IDXADDR 
+0x16E8                 PUSH.pri 
+0x16EC                   PUSH.C  0x6D4      
+0x16F4                   PUSH.C  0x2        
+0x16FC                 PUSH.ADR  0xFFFFFE70  ; hexbuf[3]
+0x1704                   PUSH.C  0x14       
+0x170C                 SYSREQ.C  0x11        ; formatex
+0x1714                    STACK  0x18        ; free 6 cells
+0x171C                    BREAK 
+0x1720                 PUSH.ADR  0xFFFFFE6C  ; v
+0x1728                 PUSH.ADR  0xFFFFFE70  ; hexbuf[3]
+0x1730                     PUSH  0x42C       ; Trie:parts
+0x1738                   PUSH.C  0xC        
+0x1740                 SYSREQ.C  0x7         ; TrieGetCell
+0x1748                    STACK  0x10        ; free 4 cells
+0x1750                      NOT 
+0x1754                     JZER  0x17A4     
+0x175C                    BREAK 
+0x1760                   PUSH.C  0x1        
+0x1768                   PUSH.S  0xFFFFFE7C  ; order
+0x1770                 PUSH.ADR  0xFFFFFE70  ; hexbuf[3]
+0x1778                     PUSH  0x42C       ; Trie:parts
+0x1780                   PUSH.C  0x10       
+0x1788                 SYSREQ.C  0x15        ; TrieSetCell
+0x1790                    STACK  0x14        ; free 5 cells
+0x1798                    BREAK 
+0x179C                    INC.S  0xFFFFFE7C  ; order
+0x17A4                     JUMP  0x1664     
+0x17AC                    STACK  0x4         ; free 1 cells
+0x17B4                     JUMP  0x1568     
+0x17BC                    STACK  0x4         ; free 1 cells
+0x17C4                    BREAK 
+                                             ; new i
+0x17C8                   PUSH.C  0x0        
+0x17D0                     JUMP  0x17E4     
+0x17D8                    BREAK 
+0x17DC                    INC.S  0xFFFFFE68  ; i
+0x17E4               LOAD.S.pri  0xFFFFFE68  ; i
+0x17EC                CONST.alt  0x3        
+0x17F4                    JSGEQ  0x184C     
+0x17FC                    BREAK 
+0x1800                CONST.alt  0x364      
+0x1808               LOAD.S.pri  0xFFFFFE68  ; i
+0x1810                   BOUNDS  0x2        
+0x1818                  IDXADDR 
+0x181C                 MOVE.alt 
+0x1820                   LOAD.I 
+0x1824                      ADD 
+0x1828                 PUSH.pri 
+0x182C                   PUSH.C  0x4        
+0x1834                 SYSREQ.C  0x16        ; db_get
+0x183C                    STACK  0x8         ; free 2 cells
+0x1844                     JUMP  0x17D8     
+0x184C                    STACK  0x4         ; free 1 cells
+0x1854                    STACK  0x194       ; free 101 cells
+0x185C                 ZERO.pri 
+0x1860                     RETN 
+0x1864                     PROC              ; public get_amx_base_ptr()
+0x1868                    BREAK 
+0x186C                    BREAK 
+0x1870                   PUSH.C  0x1        
+0x1878                   PUSH.C  0x4        
+0x1880                 SYSREQ.C  0x17        ; random
+0x1888                    STACK  0x8         ; free 2 cells
+0x1890                     JZER  0x1898     
+0x1898                    BREAK 
+                                             ; new func
+0x189C                   PUSH.C  0x0        
+0x18A4                CONST.pri  0x1864     
+0x18AC               STOR.S.pri  0xFFFFFFFC  ; func
+0x18B4                    BREAK 
+0x18B8               LOAD.S.pri  0xFFFFFFFC  ; func
+0x18C0                    ADD.C  0x30        ; signed:  48
+0x18C8               STOR.S.pri  0xFFFFFFFC  ; func
+0x18D0                    BREAK 
+                                             ; new code_addr
+0x18D4                    STACK  0xFFFFFFFC  ; allocate 1 cells
+0x18DC               LOAD.S.pri  0xFFFFFFFC  ; func
+0x18E4                    ADD.C  0x4         ; signed:  4
+0x18EC               STOR.S.pri  0xFFFFFFF8  ; code_addr
+0x18F4                    BREAK 
+0x18F8               LOAD.S.pri  0xFFFFFFFC  ; func
+0x1900                 PUSH.pri 
+0x1904                 LOAD.pri  0x118       ; DAT
+0x190C                 LOAD.alt  0x114       ; COD
+0x1914                  SUB.alt 
+0x1918                  POP.alt 
+0x191C                      ADD 
+0x1920               STOR.S.pri  0xFFFFFFFC  ; func
+0x1928                    BREAK 
+                                             ; new v
+0x192C                    STACK  0xFFFFFFFC  ; allocate 1 cells
+0x1934                   PUSH.S  0xFFFFFFFC  ; func
+0x193C                   PUSH.C  0x4        
+0x1944                     CALL  0x3CC       ; stock read_mem(address)
+0x194C               STOR.S.pri  0xFFFFFFF4  ; v
+0x1954                    BREAK 
+                                             ; new base
+0x1958                    STACK  0xFFFFFFFC  ; allocate 1 cells
+0x1960               LOAD.S.pri  0xFFFFFFF8  ; code_addr
+0x1968               LOAD.S.alt  0xFFFFFFF4  ; v
+0x1970                  SUB.alt 
+0x1974               STOR.S.pri  0xFFFFFFF0  ; base
+0x197C                    BREAK 
+0x1980               LOAD.S.pri  0xFFFFFFF0  ; base
+0x1988                    STACK  0x10        ; free 4 cells
+0x1990                     RETN 

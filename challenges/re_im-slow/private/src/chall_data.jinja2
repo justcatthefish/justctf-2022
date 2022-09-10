@@ -1,0 +1,14 @@
+#pragma once
+
+#include <vector>
+
+using u32 = std::uint32_t;
+std::vector<std::pair<u32, u32>> atad[][4] = {
+    {% for data in challenge_data %}
+    {{'{'}}
+    {%- for tdata in data %}
+            {{'{'}}{% for t1, t2 in tdata %}{{'{'}}{{t1}}, {{t2}}{{'}'}}{{ ", " if not loop.last }}{% endfor %}{{'}'}}{{ ", " if not loop.last }}
+    {%- endfor %}
+    {{'}'}}{{ "," if not loop.last }}
+    {%- endfor %}
+};

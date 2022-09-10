@@ -1,0 +1,12 @@
+fastapi==0.77.1
+uvicorn==0.17.6
+PyJWT==2.3.0
+authlib==1.0.1
+pydantic==1.9.0
+sqlalchemy==1.4.36
+requests==2.27.1
+starlette~=0.19.1
+python-multipart
+Faker~=13.11.1
+Flask~=2.1.2
+lxml~=4.8.0

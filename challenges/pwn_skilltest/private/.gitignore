@@ -1,0 +1,5 @@
+.gdb_history
+.vscode
+private/flag.txt
+private/solver/skilltest
+private/solver/libc-2.34.so

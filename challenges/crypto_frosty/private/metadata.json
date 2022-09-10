@@ -1,0 +1,8 @@
+{
+    "identifier": "pwn-frosty",
+    "category": ["crypto"],
+    "difficulty": "medium",
+    "flag": "justCTF{this_was_not_so_smart}",
+    "version": 1
+}
+

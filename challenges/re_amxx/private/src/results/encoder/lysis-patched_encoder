@@ -1,0 +1,386 @@
+new MaxClients;
+new MapName[64];
+new String:NULL_STRING[4];
+new Float:NULL_VECTOR[3];
+new COD;
+new DAT;
+new code_keys[3][7] =
+{
+	{
+		115, 116, 97, 103, 101, 49, 0
+	},
+	{
+		115, 116, 97, 103, 101, 50, 0
+	},
+	{
+		115, 116, 97, 103, 101, 51, 0
+	}
+};
+new String:encode2_fmt[20] = "%02x";
+new String:encode3_cvar_name[84] = "encoder_random_value";
+new Trie:parts;
+new amx_base;
+dump_function(address, data[], data_len, suffix[])
+{
+	decl fp;
+	fmt("addons/amxmodx/logs/function_%x%s", address, suffix);
+	fp = fopen(, "wb", MaxClients, "GAME");
+	fmt("addons/amxmodx/logs/function_%x%s", address, suffix);
+	log_amx("Dumping 0x%x to: %s", address, );
+	if (!fp)
+	{
+		log_amx("dump_function");
+		return 0;
+	}
+	new i;
+	while (i < data_len)
+	{
+		fwrite(fp, data[i], MapName);
+		i++;
+	}
+	return fclose(fp);
+}
+
+get_function_bytes(address, output[], max_output_len)
+{
+	new idx;
+	address = COD - DAT + address;
+	new i = address;
+	while (idx < max_output_len)
+	{
+		new v = read_mem(i);
+		idx++;
+		output[idx] = v;
+		if (v == 48)
+		{
+			if (idx >= max_output_len)
+			{
+				set_fail_state("Buffer too small");
+			}
+			return idx;
+		}
+		i += 4;
+	}
+	if (idx >= max_output_len)
+	{
+		set_fail_state("Buffer too small");
+	}
+	return idx;
+}
+
+read_mem(address)
+{
+	return address;
+}
+
+write_mem(address, value)
+{
+	new var1 = value;
+	address = var1;
+	return var1;
+}
+
+read_regions()
+{
+	COD = read_cod();
+	DAT = read_dat();
+	return 0;
+}
+
+read_cod()
+{
+	new ret_addr;
+	return ret_addr;
+}
+
+read_dat()
+{
+	new ret_addr;
+	return ret_addr;
+}
+
+public do_nothing()
+{
+	new tmp[2];
+	fmt("ignoreme");
+	TrieGetCell(TrieCreate(), , tmp);
+	get_user_name(MaxClients, tmp, 1);
+	get_cvar_num("ignoreme");
+	get_function_bytes(1, tmp, 1);
+	dump_function(1, tmp, 1, {0});
+	return 0;
+}
+
+public plugin_init()
+{
+	register_plugin("Super-encryptor 4001", "0.01 pre-alpha", "RiviT", 1244, 1248);
+	register_cvar("encoder_random_value", "1337", MaxClients, MaxClients);
+	read_regions();
+	set_task(1073741824, "prepare_plugin", MaxClients, 1416, MaxClients, 1420, MaxClients);
+	return 0;
+}
+
+public plugin_end()
+{
+	TrieDestroy(parts);
+	return 0;
+}
+
+public plugin_natives()
+{
+	register_native("encode_password", "encode_password", 1);
+	return 0;
+}
+
+public encode_password(id, password[], len, output[], out_len)
+{
+	param_convert(2);
+	param_convert(MapName);
+	new local_copy[256];
+	copy(local_copy, len, password);
+	new new_len = len;
+	new_len = encode1(id, local_copy, new_len);
+	new_len = encode2(local_copy, new_len);
+	new_len = encode3(local_copy, new_len);
+	copy(output, out_len, local_copy);
+	return new_len;
+}
+
+public encode1(id, password[], password_len)
+{
+	log_amx("encode1");
+	new name[33];
+	new nick_len = get_user_name(id, name, 32);
+	new i;
+	while (i < password_len)
+	{
+		if (i % 3)
+		{
+			new v = password[i];
+			v += 3;
+			v ^= 85;
+			v *= 2;
+			v &= 255;
+			password[i] = v;
+		}
+		i++;
+	}
+	new i;
+	while (i < password_len)
+	{
+		if (i % 2)
+		{
+			new v = password[i];
+			v = i ^ v;
+			v = nick_len ^ v;
+			v = name[0] ^ v;
+			v &= 255;
+			password[i] = v;
+		}
+		i++;
+	}
+	return password_len;
+}
+
+public encode2(password[], password_len)
+{
+	log_amx("encode2");
+	new key[64];
+	new i;
+	while (i < password_len)
+	{
+		formatex(key, 63, encode2_fmt, password[i]);
+		new trie_size = TrieGetSize(parts);
+		password[i] = trie_size * password[i] & 255;
+		i++;
+	}
+	return password_len;
+}
+
+public encode3(password[], password_len)
+{
+	log_amx("encode3");
+	new b = get_cvar_num(encode3_cvar_name);
+	new i;
+	while (i < password_len)
+	{
+		if (i % 5)
+		{
+			b = b + password[i] * 18 + b;
+			password[i] = b;
+			password[i] %= 1337;
+		}
+		i++;
+	}
+	return password_len;
+}
+
+public db_results_ready(key[], data[], len, func_base)
+{
+	log_amx("%s", key);
+	new dest;
+	new var1 = code_keys;
+	if (equal(key, var1[0][var1], MaxClients))
+	{
+		dest = 2404;
+	}
+	else
+	{
+		if (equal(key, code_keys[1], MaxClients))
+		{
+			dest = 3256;
+		}
+		if (equal(key, code_keys[2], MaxClients))
+		{
+			dest = 3652;
+		}
+		set_fail_state("invalid code key");
+	}
+	apply_patch(dest, data, len, func_base);
+	return 0;
+}
+
+public apply_patch(address, data[], data_len, func_base)
+{
+	fix_relocation_opcodes(address, data, data_len, func_base);
+	address = address + COD - DAT;
+	new i;
+	while (i < data_len)
+	{
+		write_mem(address, data[i]);
+		address += 4;
+		i++;
+	}
+	return 0;
+}
+
+public fix_relocation_opcodes(base_func_addr, data[], data_len, old_func_base)
+{
+	new cip;
+	while (cip < data_len)
+	{
+		new op = data[cip];
+		cip++;
+		switch (op)
+		{
+			case 49, 51, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 129:
+			{
+				new v = data[cip] - old_func_base + base_func_addr + amx_base;
+				data[cip] = v;
+				cip++;
+			}
+			default:
+			{
+			}
+		}
+	}
+	return 0;
+}
+
+public prepare_plugin()
+{
+	parts = TrieCreate();
+	amx_base = get_amx_base_ptr();
+	new buf[32];
+	new hash[64];
+	new order;
+	new hexbuf[3];
+	new v;
+	new i;
+	while (i < 256 && TrieGetSize(parts) != 256)
+	{
+		formatex(buf, 31, "%08x", i);
+		hash_string(buf, 3, hash, 64);
+		new i;
+		while (i < 64)
+		{
+			formatex(hexbuf, 2, "%c%c", hash[i], hash[i + 1]);
+			if (!TrieGetCell(parts, hexbuf, v))
+			{
+				TrieSetCell(parts, hexbuf, order, 1);
+				order++;
+			}
+			i += 2;
+		}
+		i++;
+	}
+	new i;
+	while (i < 3)
+	{
+		db_get(code_keys[i]);
+		i++;
+	}
+	return 0;
+}
+
+public get_amx_base_ptr()
+{
+	random(1);
+	new func = 6244;
+	func += 48;
+	new code_addr = func + 4;
+	func = COD - DAT + func;
+	new v = read_mem(func);
+	new base = v - code_addr;
+	return base;
+}
+
+encode1_patched(_arg0, _arg1, _arg2)
+{
+	new var1 = 0;
+	new var2;
+	var2 = get_user_name(_arg0, var1, 32);
+	new var3 = 0;
+	new var4 = 0;
+	while (var3 < _arg2)
+	{
+		new var5 = _arg1[var3];
+		var4++;
+		var5 = var1[var4] ^ var5;
+		var4 %= var2;
+		var3++;
+	}
+	new var6 = 0;
+	while (_arg2 > var6 + 1)
+	{
+		new var7 = _arg1[var6];
+		var7 = _arg1[var6 + 1] ^ var7;
+		new var8 = _arg1[var6 + 1];
+		var8 = _arg1[var6] ^ var8;
+		new var9 = _arg1[var6];
+		var9 = _arg1[var6 + 1] ^ var9;
+		var6 += 2;
+	}
+	return _arg2;
+}
+
+encode2_patched(_arg0, _arg1)
+{
+	new var1 = 0;
+	new var2 = 0;
+	while (var2 < _arg1)
+	{
+		fmt(encode2_fmt, _arg0[var2]);
+		TrieGetCell(parts, , var1);
+		_arg0[var2] = var1;
+		var2++;
+	}
+	return _arg1;
+}
+
+encode3_patched(_arg0, _arg1)
+{
+	new var1;
+	var1 = get_cvar_num(encode3_cvar_name);
+	new var2 = 0;
+	while (var2 < _arg1)
+	{
+		var1 = _arg0[var2] * 57005 + var1;
+		var1 += 1;
+		var1 %= 4096;
+		_arg0[var2] = var1;
+		var2++;
+	}
+	return _arg1;
+}
+
