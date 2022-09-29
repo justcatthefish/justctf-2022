@@ -3,6 +3,9 @@ FROM ubuntu:21.10
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Fix for https://stackoverflow.com/questions/53800051/repository-does-not-have-a-release-file-error
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
 RUN apt update && apt install -y libc++-dev libc++abi-dev socat clang make libunwind-dev
 
 RUN groupadd ctf && \
