@@ -23,6 +23,13 @@ The [`challenges/`](./challenges/) contains challanges directories with the foll
 * We also give a 1x Binary Ninja Personal license for the best writeup that uses Binary Ninja
 * We also provided  $50 for each of the two unsolved challenges to the first winners
 
+### justCTF 2022 sponsors:
+* Sumo Logic - https://www.sumologic.com/
+* Trail of Bits - https://www.trailofbits.com/
+* Vector35 (Binary Ninja) - https://vector35.com/
+
+Thanks again to all the sponsors who made this event possible!
+
 ### Challenges
 
 (Sorted from most solved to least solved)
@@ -64,7 +71,3 @@ Write-ups can be found on [CTFTime](https://ctftime.org/event/1631/tasks/). You 
 ### CTF Platform
 We wrote our own CTF platform which is available [here](https://github.com/justcatthefish/ctfplatform).
 
-### justCTF 2022 was sponsored by:
-* Sumo Logic - https://www.sumologic.com/
-* Trail of Bits - https://www.trailofbits.com/
-* Vector35 (Binary Ninja) - https://vector35.com/
