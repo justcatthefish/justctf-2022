@@ -1,6 +1,6 @@
 # justCTF 2022
 
-This repo contains sources for [justCTF 2022](https://2022.justctf.team) challenges hosted by [justCatTheFish](https://ctftime.org/team/33893).
+This repo contains sources for [justCTF 2022](https://2022.justctf.team) challenges hosted by [justCatTheFish](https://ctftime.org/team/33893) as well as summary of winners and sponsors of the event.
 
 TLDR: Run a challenge with `./run.sh` (requires Docker/docker-compose and might require `sudo` as we use `nsjail` extensively under the hood).
 
