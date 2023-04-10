@@ -14,6 +14,15 @@ The [`challenges/`](./challenges/) contains challanges directories with the foll
 * other files
 
 
+### Winners & Prizes
+* 1st place - [C4T BuT S4D](https://ctftime.org/team/83435) - $3200 + 1x Binary Ninja Personal
+* 2nd place - [Never Stop Exploiting](https://ctftime.org/team/13575) $1500 + 1x Binary Ninja Personal
+* 3rd place - [0ops](https://ctftime.org/team/4419) - $1000 + 1x Binary Ninja Personal
+* 4-8th place - [DiceGang](https://ctftime.org/team/109452), [r3kapig](https://ctftime.org/team/58979), [Water Paddler](https://ctftime.org/team/155019), [idek](https://ctftime.org/team/157039) - 1x Binary Ninja Personal
+
+* We also give a 1x Binary Ninja Personal license for the best writeup that uses Binary Ninja
+* We also provided  $50 for each of the two unsolved challenges to the first winners
+
 ### Challenges
 
 (Sorted from most solved to least solved)
@@ -48,13 +57,6 @@ The [`challenges/`](./challenges/) contains challanges directories with the foll
 | Pwn | Dark SOLs | 500 | 0 |
 | Web | Dank Shark | 500 | 0 |
 
-### Winners & Prizes
-* 1st place - [C4T BuT S4D](https://ctftime.org/team/83435) - $3200 + 1x Binary Ninja Personal
-* 2nd place - [Never Stop Exploiting](https://ctftime.org/team/13575) $1500 + 1x Binary Ninja Personal
-* 3rd place - [0ops](https://ctftime.org/team/4419) - $1000 + 1x Binary Ninja Personal
-* 4-8th place - [DiceGang](https://ctftime.org/team/109452), [r3kapig](https://ctftime.org/team/58979), [Water Paddler](https://ctftime.org/team/155019), [idek](https://ctftime.org/team/157039) - 1x Binary Ninja Personal
-
-* We also give a 1x Binary Ninja Personal license for the best writeup that uses Binary Ninja
 
 ### Write-ups
 Write-ups can be found on [CTFTime](https://ctftime.org/event/1631/tasks/). You should also look at challenges solution directories, if they exist (`solv/`).
